@@ -1,0 +1,115 @@
+/* Alap stílusok */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Fejléc */
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between; /* A cím és link széthúzása */
+    align-items: center; /* Középre igazítja a vertikális elemeket */
+    position: relative;
+}
+
+header h1 {
+    margin: 0;
+    text-align: center;
+    flex-grow: 1; /* A cím kitölti a rendelkezésre álló helyet */
+    position: relative;
+    left: 650px;
+}
+
+nav a {
+    color: white;
+    font-weight: bold;
+    text-align: right;
+    position: absolute; /* A link a jobb oldalon legyen */
+    right: 20px; /* Tartsuk a linket a jobb szélen */
+    bottom: 20px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* Main section */
+main {
+    padding: 50px 20px;
+}
+
+.login {
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login .form-label {
+    font-weight: bold;
+}
+
+.login .form-control {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.login .form-control:focus {
+    border-color: #333;
+    box-shadow: 0 0 5px rgba(51, 51, 51, 0.2);
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+/* Regisztrációs link */
+.login p {
+    text-align: center;
+    font-size: 14px;
+}
+
+.login a {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login a:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+footer {
+    background-color: #582121;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}

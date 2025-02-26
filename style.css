@@ -1,0 +1,105 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+} 
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between; /* A cím és link széthúzása */
+    align-items: center; /* Középre igazítja a vertikális elemeket */
+    position: relative;
+}
+
+header h1 {
+    margin: 0;
+    text-align: center;
+    flex-grow: 1; /* A cím kitölti a rendelkezésre álló helyet */
+}
+
+nav {
+    display: flex;
+    flex-direction: column; /* A linkeket egymás alá rendezi */
+    position: absolute; /* A linkeket a jobb oldalra pozicionálja */
+    right: 20px; /* A jobb szélen lesznek */
+    bottom: 20px;
+}
+
+nav a {
+    color: white;
+    font-weight: bold;
+    text-align: right;
+    text-decoration: none; /* Eltávolítja az aláhúzást */
+    margin: 1px 0; /* Kis távolságot ad a linkek között */
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    padding: 20px;
+}
+
+.search form {
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    padding: 10px;
+    width: 300px;
+    margin-right: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+.recommended-events {
+    display: flex;
+    flex-wrap: wrap; /* Több sorban is elhelyezkedhetnek */
+    gap: 20px; /* Kártyák közötti távolság */
+}
+
+.event-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 20px;
+    flex: 1 0 30%; /* 3 oszlop */
+}
+
+.load-more-btn {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;
+}
+
+.load-more-btn:hover {
+    background-color: #555;
+}
+
+footer {
+    background-color: #582121;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}

@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import Navbar from './assets/Navbar';
+import {BrowserRouter as Router,Swich,Route} from 'react-router-dom'
 import './App.css'
 
 function App() {
@@ -8,14 +8,21 @@ function App() {
 
   return (
     <>
-      
-        <div>
-          <h1>jo</h1>
-        </div>
-        
-        
+    <Router>
+
+
+      <Navbar    />
+     < Swich>
+      <Route path='/' exact/>
+     </Swich>
+    </Router>
     </>
-  )
+    
+      
+        
+        
+    
+  );
 }
 
 export default App

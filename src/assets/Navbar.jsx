@@ -31,7 +31,8 @@ function Navbar() {
     <>
       <nav className="navbar">
         <div className="navbar-container">
-          <Link to="/" className="navbar-logo">
+          <Link to="/" className="navbar-logo" onClick=
+          {closeMobileMenu}>
             <i className="fab fa-typo3"></i> TRVL
           </Link>
           {/* Menü ikonjának átváltása */}

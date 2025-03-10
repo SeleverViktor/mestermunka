@@ -23,3 +23,4 @@ function HeroSection(){
         </div>
     )
 }
+export default Herosection

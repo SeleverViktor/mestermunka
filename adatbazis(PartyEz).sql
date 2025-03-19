@@ -20,27 +20,6 @@ CREATE TABLE preferences (
     Preference TEXT NOT NULL
 );
 
--- Bulihely tábla
-CREATE TABLE bulihely (
-    HelyID INT PRIMARY KEY AUTO_INCREMENT,
-    HelyNev VARCHAR(50) NOT NULL,
-    Stilus VARCHAR(50),
-    ZeneStilusID INT,
-    Orszag VARCHAR(50),
-    Varos VARCHAR(50),
-    Cim VARCHAR(50),
-    FOREIGN KEY (ZeneStilusID) REFERENCES zenestilus(ZeneStilusID)
-);
-
--- Rendezveny tábla
-CREATE TABLE rendezveny (
-    RendezvenyID INT PRIMARY KEY AUTO_INCREMENT,
-    BuliID INT,
-    RNeve VARCHAR(50) NOT NULL,
-    Leiras TEXT,
-    FOREIGN KEY (BuliID) REFERENCES bulihely(HelyID)
-);
-
 -- Reszvevok tábla
 CREATE TABLE reszvevok (
     RendID INT PRIMARY KEY AUTO_INCREMENT,
@@ -69,4 +48,25 @@ CREATE TABLE organizers (
 CREATE TABLE zenestilus (
     ZeneStilusID INT PRIMARY KEY AUTO_INCREMENT,
     StilusNev VARCHAR(50) NOT NULL
+);
+
+-- Bulihely tábla
+CREATE TABLE bulihely (
+    HelyID INT PRIMARY KEY AUTO_INCREMENT,
+    HelyNev VARCHAR(50) NOT NULL,
+    Stilus VARCHAR(50),
+    ZeneStilusID INT,
+    Orszag VARCHAR(50),
+    Varos VARCHAR(50),
+    Cim VARCHAR(50),
+    FOREIGN KEY (ZeneStilusID) REFERENCES zenestilus(ZeneStilusID)
+);
+
+-- Rendezveny tábla
+CREATE TABLE rendezveny (
+    RendezvenyID INT PRIMARY KEY AUTO_INCREMENT,
+    BuliID INT,
+    RNeve VARCHAR(50) NOT NULL,
+    Leiras TEXT,
+    FOREIGN KEY (BuliID) REFERENCES bulihely(HelyID)
 );

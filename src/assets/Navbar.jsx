@@ -29,7 +29,6 @@ function Navbar() {
 
   return (
     <>
-<<<<<<< Updated upstream
       <nav className="navbar">
         <div className="navbar-container">
           <Link to="/" className="navbar-logo" onClick=
@@ -44,20 +43,6 @@ function Navbar() {
           <ul className={click ? 'nav-menu active' : 'nav-menu'}>
             <li className="nav-item">
               <Link to="/" className="nav-links" onClick={closeMobileMenu}>
-=======
-        <nav className="navbar">
-         <div className="navbar-conteiner">
-            <Link to="/" className="navbar-logo">
-             <i className="fab fa-typo3"></i>HOME_ICON
-            </Link>
-           < div className='menu-icon' onClick={handleClick}>
-                <i className={click ? 'fas fa-times': 'fas fa-bars'}/>
-
-           </div>
-           <ul className={click ?'nav-menu active' :'nav-menu'}>
-            <li className='nav-item'>
-                <Link to='/' className='nav-links' onClick={closeMobileMenu}>
->>>>>>> Stashed changes
                 Home
               </Link>
             </li>
@@ -74,7 +59,6 @@ function Navbar() {
             <li className="nav-item">
               <Link to="/sign-up" className="nav-links-mobile" onClick={closeMobileMenu}>
                 Sign Up
-<<<<<<< Updated upstream
               </Link>
             </li>
           </ul>
@@ -82,18 +66,6 @@ function Navbar() {
           {button && <Button buttonStyle="btn--outline">SIGN UP</Button>}
         </div>
       </nav>
-=======
-                </Link>
-                </li>
-           
-           <li>
-           {button &&<Button buttonStyle='btn--outline'>SIGN UP
-            </Button>}
-            </li>
-            </ul>
-         </div>
-    </nav>
->>>>>>> Stashed changes
     </>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { Button } from './Button';
+import { Link } from 'react-router-dom';
 import './Navbar.css';
 
 function Navbar() {
@@ -19,51 +19,58 @@ function Navbar() {
   };
 
   useEffect(() => {
-    showButton(); // Initially check window size
-    window.addEventListener('resize', showButton);
-
-    return () => {
-      window.removeEventListener('resize', showButton); // Cleanup event listener
-    };
+    showButton();
   }, []);
+
+  window.addEventListener('resize', showButton);
 
   return (
     <>
-      <nav className="navbar">
-        <div className="navbar-container">
-          <Link to="/" className="navbar-logo" onClick=
-          {closeMobileMenu}>
-            <i className="fab fa-typo3"></i> PARTYEZ
+      <nav className='navbar'>
+        <div className='navbar-container'>
+          <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
+            PARTYEZ
+            <i class='fab fa-typo3' />
           </Link>
-          {/* Menü ikonjának átváltása */}
-          <div className="menu-icon" onClick={handleClick}>
+          <div className='menu-icon' onClick={handleClick}>
             <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
           </div>
-          {/* Mobil verziós menü kezelése */}
           <ul className={click ? 'nav-menu active' : 'nav-menu'}>
-            <li className="nav-item">
-              <Link to="/" className="nav-links" onClick={closeMobileMenu}>
+            <li className='nav-item'>
+              <Link to='/' className='nav-links' onClick={closeMobileMenu}>
                 Home
               </Link>
             </li>
-            <li className="nav-item">
-              <Link to="/services" className="nav-links" onClick={closeMobileMenu}>
+            <li className='nav-item'>
+              <Link
+                to='/services'
+                className='nav-links'
+                onClick={closeMobileMenu}
+              >
                 Services
               </Link>
             </li>
-            <li className="nav-item">
-              <Link to="/products" className="nav-links" onClick={closeMobileMenu}>
+            <li className='nav-item'>
+              <Link
+                to='/products'
+                className='nav-links'
+                onClick={closeMobileMenu}
+              >
                 Products
               </Link>
             </li>
-            <li className="nav-item">
-              <Link to="/sign-up" className="nav-links-mobile" onClick={closeMobileMenu}>
+
+            <li>
+              <Link
+                to='/sign-up'
+                className='nav-links-mobile'
+                onClick={closeMobileMenu}
+              >
                 Sign Up
               </Link>
             </li>
           </ul>
-          {/* A "Sign Up" gomb megjelenítése a desktop verziónál */}
-          {button && <Button buttonStyle="btn--outline">SIGN UP</Button>}
+          {button && <Button buttonStyle='btn--outline'>SIGN UP</Button>}
         </div>
       </nav>
     </>

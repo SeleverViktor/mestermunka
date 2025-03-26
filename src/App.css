@@ -17,7 +17,7 @@
   }
   
   .services {
-    background-image: url('/images/img-2.jpg');
+    background-image: url('../public/images/kep3.jpg');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -26,7 +26,7 @@
   }
   
   .products {
-    background-image: url('/images/img-1.jpg');
+    background-image: url('../public/images/kep4.jpg');
     background-position: center;
     background-size: fill;
     background-repeat: no-repeat;
@@ -34,11 +34,87 @@
     font-size: 100px;
   }
   
-  .sign-up {
+  /*.sign-up {
     background-image: url('/images/img-8.jpg');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
     color: #fff;
     font-size: 100px;
-  }
+  }*/
+
+  /*regisztracio*/
+  /* Külső konténer, ami középre igazítja a formot */
+.sign-up-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url('../public/images/kep1.jpg'); /* Itt adhatod meg a háttérképed URL-jét */
+  background-size: cover; /* A háttérkép kitöltse a teljes képernyőt */
+  background-position: center; /* A háttérkép középre igazítása */
+  background-attachment: fixed; /* A háttérkép rögzítése a képernyőn */
+}
+
+/* A form körüli doboz */
+.sign-up-box {
+  background-color: rgba(255, 255, 255, 0.9); /* Félig átlátszó háttér a formhoz */
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.sign-up-box h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+}
+
+/* A form mezői */
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+/* Input fókuszáláskor */
+.input-group input:focus {
+  border-color: #4CAF50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+/* Gomb stílus */
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Hover effekt a gombon */
+button:hover {
+  background-color: #45a049;
+}

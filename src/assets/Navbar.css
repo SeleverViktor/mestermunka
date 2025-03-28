@@ -133,6 +133,8 @@
   .fa-times {
     color: #fff;
     font-size: 2rem;
+    visibility: visible;
+    opacity: 1;
   }
 
   .nav-links-mobile {

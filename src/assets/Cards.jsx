@@ -5,7 +5,7 @@ import './Cards.css';
 function Cards(){
     return(
         <div className='cards'>
-            <h1>Check out these EPIC Destinations!</h1>
+            <h1>Check out these EPIC Parties!</h1>
             <div className="cards__container">
                 <div className="cards__wrapper">
                     <ul className="cards__items">
@@ -18,7 +18,7 @@ function Cards(){
                            <CardItem
                         src="images/img-2.jpg"
                         text="nem viccelek"
-                        label='luxury'
+                        label='Adrenaline'
                         path='/services'
                         />
                     </ul>
@@ -26,19 +26,19 @@ function Cards(){
                         <CardItem
                         src="images/img-3.jpg"
                         text="már készülök ugrani"
-                        label='sigmamood'
+                        label='Luxury'
                         path='/services'
                         />
                            <CardItem
                         src="images/img-4.jpg"
                         text="három-kettő-e.."
-                        label='adrenaline'
+                        label='Freedom'
                         path='/services'
                         />
                             <CardItem
                         src="images/img-8.jpg"
                         text="vége"
-                        label='relax'
+                        label='Relax'
                         path='/services'
                         />
                     </ul>

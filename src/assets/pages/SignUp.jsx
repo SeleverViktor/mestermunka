@@ -24,17 +24,17 @@ export default function SignUp() {
     return (
         <div className="sign-up-container">
             <div className="sign-up-box">
-                <h1>Regisztráció</h1>
+                <h1>Sign Up Window</h1>
                 <form onSubmit={handleSubmit}>
                     <div className="input-group">
-                        <label htmlFor="username">Felhasználónév</label>
+                        <label htmlFor="username">Username</label>
                         <input
                             type="text"
                             id="username"
                             name="username"
                             value={formData.username}
                             onChange={handleChange}
-                            placeholder="Add meg a felhasználóneved"
+                            placeholder="Type in your username"
                             required
                         />
                     </div>
@@ -46,23 +46,23 @@ export default function SignUp() {
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            placeholder="Add meg az email címed"
+                            placeholder="Type in your email"
                             required
                         />
                     </div>
                     <div className="input-group">
-                        <label htmlFor="password">Jelszó</label>
+                        <label htmlFor="password">Password</label>
                         <input
                             type="password"
                             id="password"
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
-                            placeholder="Add meg a jelszavad"
+                            placeholder="Type in your password"
                             required
                         />
                     </div>
-                    <button type="submit">Regisztrálok</button>
+                    <button type="submit">SignUp</button>
                 </form>
             </div>
         </div>

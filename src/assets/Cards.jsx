@@ -10,34 +10,34 @@ function Cards(){
                 <div className="cards__wrapper">
                     <ul className="cards__items">
                         <CardItem
-                        src="images/img-9.jpg"
-                        text="megolom magam, ha igy haladok"
+                        src="images/little.jpg"
+                        text="LittleBig Concert"
                         label='Adventure'
                         path='/services'
                         />
                            <CardItem
-                        src="images/img-2.jpg"
-                        text="nem viccelek"
+                        src="images/rave.jpeg"
+                        text="Pink Core Rave"
                         label='Adrenaline'
                         path='/services'
                         />
                     </ul>
                     <ul className="cards__items">
                         <CardItem
-                        src="images/img-3.jpg"
-                        text="már készülök ugrani"
+                        src="images/tanchaz.jpg"
+                        text="Tradicional Dancehause Night"
                         label='Luxury'
                         path='/services'
                         />
                            <CardItem
-                        src="images/img-4.jpg"
-                        text="három-kettő-e.."
+                        src="images/hippik.jpg"
+                        text="Budapest Hippies"
                         label='Freedom'
                         path='/services'
                         />
                             <CardItem
-                        src="images/img-8.jpg"
-                        text="vége"
+                        src="images/sisi.jpg"
+                        text="Sisi Concert"
                         label='Relax'
                         path='/services'
                         />

@@ -225,7 +225,7 @@ export default function SignUp() {
         return (
             <div className="sign-up-container">
                 <div className="sign-up-box">
-                    <h1>Sign Up Window</h1>
+                    <h1>Sign Up!</h1>
                     <form onSubmit={handleSubmit}>
                         <div className="input-group">
                             <label htmlFor="username">Username</label>

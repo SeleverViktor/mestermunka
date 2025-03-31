@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Már 25. 12:46
--- Kiszolgáló verziója: 10.4.28-MariaDB
--- PHP verzió: 8.2.4
+-- Létrehozás ideje: 2025. Már 31. 20:58
+-- Kiszolgáló verziója: 10.4.32-MariaDB
+-- PHP verzió: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,21 @@ SET time_zone = "+00:00";
 --
 -- Adatbázis: `partyez`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `aduser`
+--
+
+DROP TABLE IF EXISTS `aduser`;
+CREATE TABLE `aduser` (
+  `AdNev` varchar(20) NOT NULL,
+  `AdEmail` varchar(40) NOT NULL,
+  `AdPassword` varchar(20) NOT NULL,
+  `BirthDate` date NOT NULL,
+  `AdminId` varchar(2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 -- --------------------------------------------------------
 
@@ -146,7 +161,8 @@ CREATE TABLE `users` (
   `IsAdult` tinyint(1) NOT NULL,
   `Consent` tinyint(1) NOT NULL,
   `RegistrationDate` timestamp NOT NULL DEFAULT current_timestamp(),
-  `ModifiedDate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `ModifiedDate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

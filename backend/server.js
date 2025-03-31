@@ -11,9 +11,9 @@ app.use(express.json());
 // Adatbázis kapcsolat beállítása
 const db = mysql.createConnection({
   host: 'localhost',
-  user: 'root', // A phpMyAdmin felhasználóneved (általában root helyi környezetben)
-  password: '', // A phpMyAdmin jelszavad (ha nincs, hagyd üresen)
-  database: 'partyez' // Az adatbázis neve, amit phpMyAdminban létrehoztál
+  user: 'root', // A phpMyAdmin felhasználóneved
+  password: '', // A phpMyAdmin jelszavad
+  database: 'partyez' // Az adatbázis neve
 });
 
 // Kapcsolódás az adatbázishoz

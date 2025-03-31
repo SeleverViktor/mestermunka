@@ -1,50 +1,50 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'PT Sans', sans-serif;
-  }
-  
-  .home,
-  .services,
-  .products,
-  .sign-up {
-    display: flex;
-    height: 90vh;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-  }
-  
-  .services {
-    background-image: url('../public/images/kep3.jpg');
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    color: #fff;
-    font-size: 100px;
-  }
-  
-  .products {
-    background-image: url('../public/images/kep4.jpg');
-    background-position: center;
-    background-size: fill;
-    background-repeat: no-repeat;
-    color: #fff;
-    font-size: 100px;
-  }
-  
-  /*.sign-up {
-    background-image: url('/images/img-8.jpg');
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    color: #fff;
-    font-size: 100px;
-  }*/
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'PT Sans', sans-serif;
+}
 
-  /*regisztracio*/
-  /* Külső konténer, ami középre igazítja a formot */
+.home,
+.services,
+.products,
+.sign-up {
+  display: flex;
+  height: 90vh;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
+.services {
+  background-image: url('../public/images/kep3.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: #fff;
+  font-size: 100px;
+}
+
+.products {
+  background-image: url('../public/images/kep4.jpg');
+  background-position: center;
+  background-size: fill;
+  background-repeat: no-repeat;
+  color: #fff;
+  font-size: 100px;
+}
+
+/*.sign-up {
+  background-image: url('/images/img-8.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: #fff;
+  font-size: 100px;
+}*/
+
+/*regisztracio*/
+/* Külső konténer, ami középre igazítja a formot */
 .sign-up-container {
   display: flex;
   justify-content: center;
@@ -99,6 +99,25 @@
 .input-group input:focus {
   border-color: #4CAF50;
   box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+/* A DatePicker alatti szöveg (pl. "Already have an account?") */
+.input-group p {
+  margin-top: 15px; /* Több hely a DatePicker és a szöveg között */
+  font-size: 14px;
+  color: #555;
+}
+
+/* A link stílusa */
+.input-group a {
+  color: #4CAF50; /* Zöld szín, hogy illeszkedjen a gombhoz */
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.input-group a:hover {
+  text-decoration: underline;
+  color: #45a049; /* Sötétebb zöld hover esetén */
 }
 
 /* Gomb stílus */

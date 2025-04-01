@@ -6,6 +6,9 @@ import Home from './assets/pages/Home';
 import Services from './assets/pages/Services';
 import Products from './assets/pages/Products';
 import SignUp from './assets/pages/SignUp';
+import SignIn from './assets/pages/SignIn';
+
+
 
 
 
@@ -21,7 +24,8 @@ function App() {
           <Route path='/services' element={<Services />} />
           <Route path='/products' element={<Products />} />
           <Route path='/sign-up' element={<SignUp />} />
-        </Routes>
+          <Route path="/sign-in" element={<SignIn />} />
+          </Routes>
       </Router>
     </>
   );

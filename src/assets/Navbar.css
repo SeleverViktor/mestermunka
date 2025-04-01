@@ -17,6 +17,9 @@
   height: 80px;
   max-width: 1500px;
 }
+.navbar-container > button + button {
+  margin-left: 10px; /* Adds space between Sign In and Sign Up buttons */
+}
 
 .navbar-logo {
   color: #fff;
@@ -88,8 +91,14 @@
   margin-top: 20px;  /* Nagyobb távolságot adunk a linknek a SignUp gombtól */
   text-align: center; /* Igazítsuk a linket középre */
   margin-bottom:20px;
+  
 }
 
+.sign-up-container {
+  background-image: url('../../public/images/kep5.jpg');
+  background-size: cover;
+  background-position: center;
+}
 
 .signin-link {
   color: green;

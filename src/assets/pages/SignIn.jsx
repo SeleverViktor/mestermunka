@@ -53,7 +53,7 @@ export default function SignIn() {
                     </div>
                     {/* Link to SignUp page for users without an account */}
                     <p className="signin-link-container">
-                        Don’t have an account?{' '}
+                        Haven't registered yet?{' '}
                         <Link to="/sign-up" className="signin-link">
                             Sign Up Here!
                         </Link>

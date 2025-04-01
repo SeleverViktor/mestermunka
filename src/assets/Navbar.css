@@ -17,8 +17,15 @@
   height: 80px;
   max-width: 1500px;
 }
-.navbar-container > button + button {
+/* ... (your existing Navbar.css content) ... */
+
+.navbar-container .btn-mobile + .btn-mobile {
   margin-left: 10px; /* Adds space between Sign In and Sign Up buttons */
+}
+
+.button-group {
+  display: flex;
+  gap: 10px; /* Space between buttons */
 }
 
 .navbar-logo {

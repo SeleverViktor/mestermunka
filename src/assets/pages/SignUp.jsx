@@ -282,7 +282,7 @@ export default function SignUp() {
                         {/* Itt helyezzük el a "Already have an account?" linket */}
                         <p className="signin-link-container">
                             Already have an account?{' '}
-                            <Link to="/signin" className="signin-link">
+                            <Link to="/sign-in" className="signin-link">
                                 Sign In Here!
                             </Link>
                         </p>

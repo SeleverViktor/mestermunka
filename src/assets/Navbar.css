@@ -83,6 +83,32 @@
   align-items: center;
   justify-content: center;
 }
+/* Módosított CSS a link távolságához */
+.signin-link-container {
+  margin-top: 20px;  /* Nagyobb távolságot adunk a linknek a SignUp gombtól */
+  text-align: center; /* Igazítsuk a linket középre */
+  margin-bottom:20px;
+}
+
+
+.signin-link {
+  color: green;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: all 0.2s ease-out;
+}
+
+.signin-link:hover {
+  text-decoration: underline;
+  color: #13500F; /* Sötétzöld szín hover állapotban */
+}
+
+@media screen and (min-width: 960px) {
+.signin-link {
+  font-size: 1.2rem;
+}
+}
+
 
 @media screen and (min-width: 960px) {
   .btn--outline {

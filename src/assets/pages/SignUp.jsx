@@ -167,6 +167,7 @@ export default function SignUp() {
     import React, { useState } from 'react';
     import DatePicker from 'react-datepicker';
     import 'react-datepicker/dist/react-datepicker.css';
+    import { Link } from 'react-router-dom'; // Link importálása
     import '../../App.css';
     
     export default function SignUp() {
@@ -177,7 +178,7 @@ export default function SignUp() {
             birthDate: null,
         });
         const [ageError, setAgeError] = useState(''); // Hibaüzenet tárolására
-    
+        
         const handleChange = (e) => {
             const { name, value } = e.target;
             setFormData((prevData) => ({
@@ -188,7 +189,7 @@ export default function SignUp() {
     
         // Életkor kiszámítása
         const calculateAge = (birthDate) => {
-            if (!birthDate) return 0; // Ha nincs születési dátum, 0-t adunk vissza
+            if (!birthDate) return 0;
             const today = new Date();
             const birth = new Date(birthDate);
             let age = today.getFullYear() - birth.getFullYear();
@@ -205,12 +206,11 @@ export default function SignUp() {
                 birthDate: date,
             }));
     
-            // Életkor ellenőrzése
             const age = calculateAge(date);
             if (age < 18) {
                 setAgeError('You must be at least 18 years old to register.');
             } else {
-                setAgeError(''); // Ha 18 vagy idősebb, nincs hiba
+                setAgeError('');
             }
         };
     
@@ -219,7 +219,7 @@ export default function SignUp() {
             console.log('Regisztrációs adatok:', formData);
         };
     
-        // A gomb disabled állapotának meghatározása
+        // Gomb disabled állapotának meghatározása
         const isUnderAge = formData.birthDate ? calculateAge(formData.birthDate) < 18 : true;
     
         return (
@@ -274,11 +274,18 @@ export default function SignUp() {
                                 showYearDropdown
                                 scrollableYearDropdown
                                 yearDropdownItemNumber={100}
-                                maxDate={new Date()} // Nem lehet jövőbeli dátum
+                                maxDate={new Date()}
                                 required
                             />
-                            {ageError && <p style={{ color: 'red' }}>{ageError}</p>} {/* Hibaüzenet megjelenítése */}
+                            {ageError && <p style={{ color: 'red' }}>{ageError}</p>}
                         </div>
+                        {/* Itt helyezzük el a "Already have an account?" linket */}
+                        <p className="signin-link-container">
+                            Already have an account?{' '}
+                            <Link to="/signin" className="signin-link">
+                                Sign In Here!
+                            </Link>
+                        </p>
                         <button type="submit" disabled={isUnderAge}>
                             SignUp
                         </button>
@@ -287,3 +294,4 @@ export default function SignUp() {
             </div>
         );
     }
+    

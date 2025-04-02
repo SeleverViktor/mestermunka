@@ -1,45 +1,37 @@
-const express = require('express');
-const mysql = require('mysql2');
-const cors = require('cors');
-
+/*const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
+const port = 5000;
 
-// Middleware
+app.use(bodyParser.json());
+
+app.post('/register', (req, res) => {
+    const { email, username, birthDate, password } = req.body;
+    // Itt helyezd el a PHP kódot, amely az adatokat az adatbázisba tölti
+    // Például: callPHPFunctionToRegisterUser(email, username, birthDate, password);
+    res.json({ message: 'Sikeres regisztráció!' });
+});
+
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+});
+*/
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const app = express();
+const port = 5000;
+
+app.use(bodyParser.json());
 app.use(cors());
-app.use(express.json());
 
-// Adatbázis kapcsolat beállítása
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root', // A phpMyAdmin felhasználóneved (általában root helyi környezetben)
-  password: '', // A phpMyAdmin jelszavad (ha nincs, hagyd üresen)
-  database: 'partyez' // Az adatbázis neve, amit phpMyAdminban létrehoztál
+app.post('/register', (req, res) => {
+    const { email, username, birthDate, password } = req.body;
+    // Itt helyezd el a PHP kódot, amely az adatokat az adatbázisba tölti
+    // Például: callPHPFunctionToRegisterUser(email, username, birthDate, password);
+    res.json({ message: 'Sikeres regisztráció!' });
 });
 
-// Kapcsolódás az adatbázishoz
-db.connect((err) => {
-  if (err) {
-    console.error('Hiba az adatbázis csatlakozás során:', err);
-    return;
-  }
-  console.log('Sikeresen csatlakoztál az adatbázishoz!');
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
 });
-
-// Példa API végpont: Összes felhasználó lekérdezése (feltételezem, hogy van egy "users" táblád)
-app.get('/api/users', (req, res) => {
-  const sql = 'SELECT * FROM users'; // Cseréld ki a tábla nevét, ha más
-  db.query(sql, (err, results) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-    res.json(results);
-  });
-});
-
-// Szerver indítása
-const PORT = 5000;
-app.listen(PORT, () => {
-  console.log(`A szerver fut a http://localhost:${PORT} címen`);
-});
-
-  

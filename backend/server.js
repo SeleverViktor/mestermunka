@@ -1,45 +1,69 @@
 const express = require('express');
-const mysql = require('mysql2');
+const bodyParser = require('body-parser');
 const cors = require('cors');
+const mysql = require('mysql2');
+const bcrypt = require('bcrypt');
 
 const app = express();
+const port = 5000;
 
-// Middleware
+app.use(bodyParser.json());
 app.use(cors());
-app.use(express.json());
 
-// Adatbázis kapcsolat beállítása
 const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root', // A phpMyAdmin felhasználóneved
-  password: '', // A phpMyAdmin jelszavad
-  database: 'partyez' // Az adatbázis neve
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'partyez',
 });
 
-// Kapcsolódás az adatbázishoz
 db.connect((err) => {
-  if (err) {
-    console.error('Hiba az adatbázis csatlakozás során:', err);
-    return;
-  }
-  console.log('Sikeresen csatlakoztál az adatbázishoz!');
-});
-
-// Példa API végpont: Összes felhasználó lekérdezése (feltételezem, hogy van egy "users" táblád)
-app.get('/api/users', (req, res) => {
-  const sql = 'SELECT * FROM users'; // Cseréld ki a tábla nevét, ha más
-  db.query(sql, (err, results) => {
     if (err) {
-      return res.status(500).json({ error: err.message });
+        console.error('Error connecting to MySQL:', err);
+        return;
     }
-    res.json(results);
-  });
+    console.log('Connected to MySQL database');
 });
 
-// Szerver indítása
-const PORT = 5000;
-app.listen(PORT, () => {
-  console.log(`A szerver fut a http://localhost:${PORT} címen`);
+app.post('/register', async (req, res) => {
+    const { email, username, birthDate, password } = req.body;
+
+    if (!email || !username || !birthDate || !password) {
+        return res.status(400).json({ message: 'Minden mező kitöltése kötelező!' });
+    }
+
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const birth = new Date(birthDate);
+        const today = new Date();
+        let age = today.getFullYear() - birth.getFullYear();
+        const monthDiff = today.getMonth() - birth.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+            age--;
+        }
+        const isAdult = age >= 18 ? 1 : 0;
+
+        const query = `
+            INSERT INTO users (Email, Name, BirthDate, IsAdult, Consent, password)
+            VALUES (?, ?, ?, ?, ?, ?)
+        `;
+        db.query(query, [email, username, birthDate, isAdult, 1, hashedPassword], (err, result) => {
+            if (err) {
+                if (err.code === 'ER_DUP_ENTRY') {
+                    return res.status(400).json({ message: 'Ez az email már regisztrálva van!' });
+                }
+                console.error('Database error:', err);
+                return res.status(500).json({ message: 'Szerver hiba történt!' });
+            }
+            res.json({ message: 'Sikeres regisztráció!' });
+        });
+    } catch (error) {
+        console.error('Error during registration:', error);
+        res.status(500).json({ message: 'Szerver hiba történt!' });
+    }
 });
 
-  
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+});

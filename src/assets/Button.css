@@ -1,38 +1,52 @@
-:root{
-    --primary: #fff;
-}
+/* Button.css */
 
-.btn{
-    padding:8px 20px;
-    border-radius: 2px;
-    outline: none;
+/* Base button styles */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border: none;
     cursor: pointer;
-}
-
-.btn--primary{
-    background-color: var(--primary) ;
-    color: #242424;
-    border: 1px solid var(--primary);
-}
-
-.btn--outline{
-background-color: transparent;
-color: #fff;
-padding: 8px 20px;
-border: 1px solid var(--primary);
-transition: all 0.3s ease-out;
-}
-
-.btn--medium{
-    padding: 8px 20px;
-    font-size: 20px;
-}
-
-.btn--medium:hover, 
-.btn--large:hover{
-    background-color: #fff;
-    color:#242424;
-    transition:250ms;
+    text-decoration: none;
     transition: all 0.3s ease-out;
-}
+  }
+  
+  /* Style variants */
+  .btn--primary {
+    background-color: #4CAF50; /* Green background, matching your sign-up form button */
+    color: white;
+    padding: 0.5rem 1.5rem;
+  }
+  
+  .btn--primary:hover {
+    background-color: #45a049; /* Darker green on hover */
+  }
+  
+  .btn--outline {
+    background-color: transparent;
+    border: 1px solid #fff; /* White border, matching navbar */
+    color: #fff; /* White text */
+    padding: 0.5rem 1.5rem;
+  }
+  
+  .btn--outline:hover {
+    background-color: #fff; /* White background on hover */
+    color: #242424; /* Dark text on hover */
+  }
+  
+  /* Size variants */
+  .btn--medium {
+    font-size: 1rem;
+    padding: 0.5rem 1.5rem;
+  }
+  
+  .btn--large {
+    font-size: 1.2rem;
+    padding: 0.75rem 2rem;
+  }
+  
+  /* Mobile link wrapper */
+  .btn-mobile {
+    text-decoration: none;
+    color: inherit; /* Ensures the Link doesn’t override button text color */
+  }

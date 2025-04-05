@@ -17,6 +17,16 @@
   height: 80px;
   max-width: 1500px;
 }
+/* ... (your existing Navbar.css content) ... */
+
+.navbar-container .btn-mobile + .btn-mobile {
+  margin-left: 10px; /* Adds space between Sign In and Sign Up buttons */
+}
+
+.button-group {
+  display: flex;
+  gap: 10px; /* Space between buttons */
+}
 
 .navbar-logo {
   color: #fff;
@@ -75,6 +85,54 @@
   display: none;
 }
 
+/* Fix for the "SIGN UP" button */
+.btn--outline {
+  white-space: nowrap;
+  padding: 0.5rem 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Módosított CSS a link távolságához */
+.signin-link-container {
+  margin-top: 20px;  /* Nagyobb távolságot adunk a linknek a SignUp gombtól */
+  text-align: center; /* Igazítsuk a linket középre */
+  margin-bottom:20px;
+  
+}
+
+.sign-up-container {
+  background-image: url('../../public/images/kep5.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.signin-link {
+  color: green;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: all 0.2s ease-out;
+}
+
+.signin-link:hover {
+  text-decoration: underline;
+  color: #13500F; /* Sötétzöld szín hover állapotban */
+}
+
+@media screen and (min-width: 960px) {
+.signin-link {
+  font-size: 1.2rem;
+}
+}
+
+
+@media screen and (min-width: 960px) {
+  .btn--outline {
+    min-width: 120px;
+    font-size: 1.2rem;
+  }
+}
+
 @media screen and (max-width: 960px) {
   .NavbarItems {
     position: relative;
@@ -83,7 +141,7 @@
   .nav-menu {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Align items to the top */
+    justify-content: flex-start;
     width: 100%;
     height: 90vh;
     position: absolute;
@@ -99,7 +157,7 @@
     opacity: 1;
     transition: all 0.5s ease;
     z-index: 1;
-    justify-content: flex-start; /* Ensure alignment persists when active */
+    justify-content: flex-start;
   }
 
   .nav-links {

@@ -1,27 +1,10 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const mysql = require('mysql');
-const bcrypt = require('bcrypt');
-const app = express();
-const port = 5000;
-
-app.use(bodyParser.json());
-app.use(cors());
+const mysql = require('mysql2/promise'); // mysql2/promise használata
 
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
     database: 'partyez',
-});
-
-db.connect((err) => {
-    if (err) {
-        console.error('Error connecting to MySQL:', err);
-        return;
-    }
-    console.log('Connected to MySQL database');
 });
 
 app.post('/register', async (req, res) => {
@@ -47,22 +30,14 @@ app.post('/register', async (req, res) => {
             INSERT INTO users (Email, Name, BirthDate, IsAdult, Consent, password)
             VALUES (?, ?, ?, ?, ?, ?)
         `;
-        db.query(query, [email, username, birthDate, isAdult, 1, hashedPassword], (err, result) => {
-            if (err) {
-                if (err.code === 'ER_DUP_ENTRY') {
-                    return res.status(400).json({ message: 'Ez az email már regisztrálva van!' });
-                }
-                console.error('Database error:', err);
-                return res.status(500).json({ message: 'Szerver hiba történt!' });
-            }
-            res.json({ message: 'Sikeres regisztráció!' });
-        });
+        const connection = await db; // Kapcsolat létrehozása
+        await connection.execute(query, [email, username, birthDate, isAdult, 1, hashedPassword]);
+        res.json({ message: 'Sikeres regisztráció!' });
     } catch (error) {
+        if (error.code === 'ER_DUP_ENTRY') {
+            return res.status(400).json({ message: 'Ez az email már regisztrálva van!' });
+        }
         console.error('Error during registration:', error);
         res.status(500).json({ message: 'Szerver hiba történt!' });
     }
-});
-
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
 });

@@ -6,7 +6,7 @@ header("Access-Control-Allow-Headers: Content-Type");
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "adatbazis_neve";
+$dbname = "adatbazis_neve"; // Cserélje le a tényleges adatbázis nevére
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -21,13 +21,17 @@ $name = $data['username'];
 $birthDate = $data['birthDate'];
 $password = password_hash($data['password'], PASSWORD_DEFAULT);
 
-$sql = "INSERT INTO users (Email, Name, BirthDate, IsAdult, Consent, password) VALUES ('$email', '$name', '$birthDate', 1, 1, '$password')";
+$stmt = $conn->prepare("INSERT INTO users (Email, Name, BirthDate, IsAdult, Consent, password) VALUES (?, ?, ?, ?, ?, ?)");
+$stmt->bind_param("sssiss", $email, $name, $birthDate, $isAdult, $consent, $password);
+$isAdult = 1; // vagy számolja ki a kor alapján
+$consent = 1; // vagy vegye az értéket a bemeneti adatokból
 
-if ($conn->query($sql) === TRUE) {
+if ($stmt->execute()) {
     echo json_encode(["message" => "Sikeres regisztráció!"]);
 } else {
-    echo json_encode(["message" => "Hiba: " . $sql . "<br>" . $conn->error]);
+    echo json_encode(["message" => "Hiba: " . $stmt->error]);
 }
 
+$stmt->close();
 $conn->close();
 ?>

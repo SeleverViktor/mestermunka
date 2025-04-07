@@ -1,15 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const mysql = require('mysql2');
-const bcrypt = require('bcrypt');
-
 const app = express();
 const port = 5000;
 
 app.use(bodyParser.json());
 app.use(cors());
 
+<<<<<<< HEAD
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -62,6 +60,13 @@ app.post('/register', async (req, res) => {
         console.error('Error during registration:', error);
         res.status(500).json({ message: 'Szerver hiba történt!' });
     }
+=======
+app.post('/register', (req, res) => {
+    const { email, username, birthDate, password } = req.body;
+    // Itt helyezd el a PHP kódot, amely az adatokat az adatbázisba tölti
+    // Például: callPHPFunctionToRegisterUser(email, username, birthDate, password);
+    res.json({ message: 'Sikeres regisztráció!' });
+>>>>>>> parent of 3ad2e0f (regisztracio(le kello tölteni a szajrekat npm)))
 });
 
 app.listen(port, () => {

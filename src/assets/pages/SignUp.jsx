@@ -65,7 +65,7 @@ export default function SignUp() {
         };
 
         try {
-            const response = await fetch('http://localhost/backend/register.php', {
+            const response = await fetch('http://localhost:5000/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ export default function SignUp() {
                 // Sikeres regisztráció
                 console.log('Regisztrációs adatok:', formData);
                 alert('Registration successful!');
-                navigate('/signin'); // Átirányítás a Sign In oldalra
+                navigate('/sign-in'); // Átirányítás a Sign In oldalra
             } else {
                 // Hiba esetén
                 setSubmitError(result.message || 'Registration failed.');

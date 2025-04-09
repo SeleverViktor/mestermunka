@@ -6,7 +6,7 @@ header("Access-Control-Allow-Headers: Content-Type");
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "adatbazis_neve"; // Cserélje le a tényleges adatbázis nevére
+$dbname = "partyez"; // Cserélje le a tényleges adatbázis nevére
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 

@@ -16,6 +16,7 @@ const dbConfig = {
     user: 'root',
     password: '', // Éles környezetben adj meg jelszót!
     database: 'partyez',
+    port: '3307',
 };
 
 // Regisztrációs végpont

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Hozzáadjuk a useNavigate-et a navigációhoz
+import { Link, useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../App.css';
+import mysql from 'mysql2/promise'; // MySQL kliensoldali kapcsolat
+import bcrypt from 'bcryptjs'; // Jelszó hashelés kliensoldalon
 
 export default function SignUp() {
     const [formData, setFormData] = useState({
@@ -12,8 +14,17 @@ export default function SignUp() {
         birthDate: null,
     });
     const [ageError, setAgeError] = useState('');
-    const [submitError, setSubmitError] = useState(''); // Hibaüzenet a regisztrációhoz
-    const navigate = useNavigate(); // Navigáció a sikeres regisztráció után
+    const [submitError, setSubmitError] = useState('');
+    const navigate = useNavigate();
+
+    // Adatbázis konfiguráció (NEM BIZTONSÁGOS éles környezetben!)
+    const dbConfig = {
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        database: 'partyez',
+        port: 3306,
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -52,40 +63,56 @@ export default function SignUp() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Formátumozzuk a birthDate-et YYYY-MM-DD formátumba
         const formattedBirthDate = formData.birthDate
             ? formData.birthDate.toISOString().split('T')[0]
             : null;
 
-        const dataToSend = {
-            username: formData.username,
-            email: formData.email,
-            password: formData.password,
-            birthDate: formattedBirthDate,
-        };
+        if (!formData.username || !formData.email || !formData.password || !formattedBirthDate) {
+            setSubmitError('Minden mező kitöltése kötelező!');
+            return;
+        }
 
+        let connection;
         try {
-            const response = await fetch('http://localhost:5000/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(dataToSend),
-            });
+            // Jelszó hashelés kliensoldalon
+            const hashedPassword = await bcrypt.hash(formData.password, 10);
+            const isAdult = 1; // Fix érték
+            const consent = 1; // Fix érték
 
-            const result = await response.json();
+            // Adatbázis kapcsolat létrehozása
+            connection = await mysql.createConnection(dbConfig);
 
-            if (response.ok) {
-                // Sikeres regisztráció
-                console.log('Regisztrációs adatok:', formData);
-                alert('Registration successful!');
-                navigate('/sign-in'); // Átirányítás a Sign In oldalra
+            // SQL lekérdezés a server.js-ből átvéve
+            const query = `
+                INSERT INTO users (Email, Name, BirthDate, IsAdult, Consent, password, RegistrationDate, ModifiedDate)
+                VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())
+            `;
+            const [result] = await connection.execute(query, [
+                formData.email,
+                formData.username,
+                formattedBirthDate,
+                isAdult,
+                consent,
+                hashedPassword,
+            ]);
+
+            if (result.affectedRows === 1) {
+                alert('Sikeres regisztráció!');
+                navigate('/sign-in');
             } else {
-                // Hiba esetén
-                setSubmitError(result.message || 'Registration failed.');
+                throw new Error('Hiba az adatbázisba írás során');
             }
         } catch (error) {
-            setSubmitError('Error connecting to the server: ' + error.message);
+            console.error('Detailed error during registration:', error);
+            if (error.code === 'ER_DUP_ENTRY') {
+                setSubmitError('Ez az email már regisztrálva van!');
+            } else {
+                setSubmitError('Hiba: ' + error.message);
+            }
+        } finally {
+            if (connection) {
+                await connection.end();
+            }
         }
     };
 

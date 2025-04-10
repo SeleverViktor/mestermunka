@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../App.css';
+import mysql from 'mysql2/promise'; // MySQL kliensoldali kapcsolat
+import bcrypt from 'bcryptjs'; // Jelszó hashelés kliensoldalon
 
 export default function SignUp() {
     const [formData, setFormData] = useState({
@@ -12,7 +14,17 @@ export default function SignUp() {
         birthDate: null,
     });
     const [ageError, setAgeError] = useState('');
-    const [submitMessage, setSubmitMessage] = useState('');
+    const [submitError, setSubmitError] = useState('');
+    const navigate = useNavigate();
+
+    // Adatbázis konfiguráció (NEM BIZTONSÁGOS éles környezetben!)
+    const dbConfig = {
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        database: 'partyez',
+        port: 3306,
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -51,35 +63,56 @@ export default function SignUp() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const age = calculateAge(formData.birthDate);
-        const isAdult = age >= 18;
+        const formattedBirthDate = formData.birthDate
+            ? formData.birthDate.toISOString().split('T')[0]
+            : null;
 
-        const dataToSend = {
-            email: formData.email,
-            username: formData.username,
-            birthDate: formData.birthDate.toISOString().split('T')[0],
-            password: formData.password,
-        };
+        if (!formData.username || !formData.email || !formData.password || !formattedBirthDate) {
+            setSubmitError('Minden mező kitöltése kötelező!');
+            return;
+        }
 
+        let connection;
         try {
-            const response = await fetch('http://localhost:5000/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(dataToSend),
-            });
+            // Jelszó hashelés kliensoldalon
+            const hashedPassword = await bcrypt.hash(formData.password, 10);
+            const isAdult = 1; // Fix érték
+            const consent = 1; // Fix érték
 
-            const result = await response.json();
-            if (response.ok) {
-                setSubmitMessage('Sikeres regisztráció!');
-                setFormData({ username: '', email: '', password: '', birthDate: null });
+            // Adatbázis kapcsolat létrehozása
+            connection = await mysql.createConnection(dbConfig);
+
+            // SQL lekérdezés a server.js-ből átvéve
+            const query = `
+                INSERT INTO users (Email, Name, BirthDate, IsAdult, Consent, password, RegistrationDate, ModifiedDate)
+                VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())
+            `;
+            const [result] = await connection.execute(query, [
+                formData.email,
+                formData.username,
+                formattedBirthDate,
+                isAdult,
+                consent,
+                hashedPassword,
+            ]);
+
+            if (result.affectedRows === 1) {
+                alert('Sikeres regisztráció!');
+                navigate('/sign-in');
             } else {
-                setSubmitMessage(`Hiba: ${result.message}`);
+                throw new Error('Hiba az adatbázisba írás során');
             }
         } catch (error) {
-            setSubmitMessage('Hiba történt. Kérlek, próbáld újra!');
-            console.error('Error submitting form:', error);
+            console.error('Detailed error during registration:', error);
+            if (error.code === 'ER_DUP_ENTRY') {
+                setSubmitError('Ez az email már regisztrálva van!');
+            } else {
+                setSubmitError('Hiba: ' + error.message);
+            }
+        } finally {
+            if (connection) {
+                await connection.end();
+            }
         }
     };
 
@@ -141,21 +174,15 @@ export default function SignUp() {
                             required
                         />
                         {ageError && <p style={{ color: 'red' }}>{ageError}</p>}
+                        {submitError && <p style={{ color: 'red' }}>{submitError}</p>}
+                        <p>
+                            Already have an account?{' '}
+                            <Link to="/signin">Sign In here!</Link>
+                        </p>
                     </div>
                     <button type="submit" disabled={isUnderAge}>
                         SignUp
                     </button>
-                    {submitMessage && (
-                        <p style={{ color: submitMessage.includes('Hiba') ? 'red' : 'green' }}>
-                            {submitMessage}
-                        </p>
-                    )}
-                    <p className="signin-link-container">
-                        Already have an account?{' '}
-                        <Link to="/sign-in" className="signin-link">
-                            Sign In Here!
-                        </Link>
-                    </p>
                 </form>
             </div>
         </div>

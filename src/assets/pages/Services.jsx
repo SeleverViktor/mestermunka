@@ -53,14 +53,13 @@ export default function Services() {
             onClick={() => handleCardClick(event)}
           >
             <img
-              src={event.image || 'https://via.placeholder.com/150'} // Ha nincs kép, placeholder
+              src={event.pictures || 'https://via.placeholder.com/150'}
               alt={event.RNeve}
               className="service-image"
             />
             <h3>{event.RNeve}</h3>
-            <h4>{event.Leiras.slice(0, 20) + '...'}</h4> // Rövidített leírás címként
-            <p>{event.Leiras}</p>
             <p><strong>Dátum:</strong> {event.Datum}</p>
+            <p><strong>Kezdet:</strong> {event.Start}</p>
             <p><strong>Helyszín:</strong> {event.Helyszin}</p>
           </div>
         ))}
@@ -71,9 +70,10 @@ export default function Services() {
           <h2>{selectedService.RNeve}</h2>
           <p>{selectedService.Leiras}</p>
           <p><strong>Dátum:</strong> {selectedService.Datum}</p>
+          <p><strong>Kezdet:</strong> {selectedService.Start}</p>
           <p><strong>Helyszín:</strong> {selectedService.Helyszin}</p>
           <img
-            src={selectedService.image || 'https://via.placeholder.com/150'}
+            src={selectedService.pictures || 'https://via.placeholder.com/150'}
             alt={selectedService.RNeve}
             className="service-detail-image"
           />

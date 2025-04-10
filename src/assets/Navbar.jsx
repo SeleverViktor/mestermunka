@@ -61,9 +61,6 @@ function Navbar() {
         </ul>
         {button && (
       <>
-       <Button buttonStyle='btn--outline' to='/sign-in' onClick={closeMobileMenu}>
-        SIGN IN
-       </Button>
        <Button buttonStyle='btn--outline' to='/sign-up' onClick={closeMobileMenu}>
          SIGN UP
        </Button>

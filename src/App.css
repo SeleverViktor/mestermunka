@@ -16,54 +16,29 @@
   font-size: 3rem;
 }
 
-/*.services {
-  background-image: url('../public/images/kep3.jpg');
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  color: #fff;
-  font-size: 100px;
-}
-*/
-
 .products {
   background-image: url('../public/images/kep4.jpg');
   background-position: center;
-
-  background-size: fill;
-
-  background-size: cover; /* Changed from 'fill' to 'cover' (fill is not a valid value) */
-
+  background-size: cover;
   background-repeat: no-repeat;
   color: #fff;
   font-size: 100px;
 }
 
-/*.sign-up {
-  background-image: url('/images/img-8.jpg');
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  color: #fff;
-  font-size: 100px;
-}*/
-
-/*regisztracio*/
-/* Külső konténer, ami középre igazítja a formot */
+/* Regisztráció */
 .sign-up-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-image: url('../public/images/kep1.jpg'); /* Háttérkép a SignUp/SignIn oldalhoz */
-  background-size: cover; /* A háttérkép kitöltse a teljes képernyőt */
-  background-position: center; /* A háttérkép középre igazítása */
-  background-attachment: fixed; /* A háttérkép rögzítése a képernyőn */
+  background-image: url('../public/images/kep1.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
-/* A form körüli doboz */
 .sign-up-box {
-  background-color: rgba(255, 255, 255, 0.9); /* Félig átlátszó háttér a formhoz */
+  background-color: rgba(255, 255, 255, 0.9);
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
@@ -78,7 +53,6 @@
   color: #333;
 }
 
-/* A form mezői */
 .input-group {
   margin-bottom: 20px;
 }
@@ -100,32 +74,28 @@
   transition: all 0.3s ease;
 }
 
-/* Input fókuszáláskor */
 .input-group input:focus {
   border-color: #4CAF50;
   box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
 }
 
-/* A DatePicker alatti szöveg (pl. "Already have an account?") */
 .input-group p {
-  margin-top: 15px; /* Több hely a DatePicker és a szöveg között */
+  margin-top: 15px;
   font-size: 14px;
   color: #555;
 }
 
-/* A link stílusa */
 .input-group a {
-  color: #4CAF50; /* Zöld szín, hogy illeszkedjen a gombhoz */
+  color: #4CAF50;
   text-decoration: none;
   font-weight: bold;
 }
 
 .input-group a:hover {
   text-decoration: underline;
-  color: #45a049; /* Sötétebb zöld hover esetén */
+  color: #45a049;
 }
 
-/* Gomb stílus */
 button {
   width: 100%;
   padding: 12px;
@@ -138,20 +108,15 @@ button {
   transition: all 0.3s ease;
 }
 
-/* Hover effekt a gombon */
 button:hover {
   background-color: #45a049;
-
-
 }
 
-/* Disabled gomb stílusa (SignUp-ban az életkor ellenőrzés miatt) */
 button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
 }
 
-/* DatePicker stílus igazítása az inputokhoz */
 .react-datepicker-wrapper {
   width: 100%;
 }
@@ -170,32 +135,43 @@ button:disabled {
   border-color: #4CAF50;
   box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
 }
-/*services css kerlek legyen jo*/
+
+/* Services CSS - Reszponzív módosítások */
 .services-container {
   text-align: center;
   padding: 2rem;
   background-image: url('../public/images/kep3.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
 }
 
 .services-title {
   font-size: 2rem;
   margin-bottom: 2rem;
+  text-shadow: 4px 4px 4px black;
+  color: white;
 }
 
 .cards-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
   margin-top: 2rem;
+  padding: 0 1rem;
 }
 
 .service-card {
-  background-color: red;
+  background-color: rgba(255, 255, 255, 0.8); /* Áttetsző fehér háttér */
   padding: 1rem;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .service-card:hover {
@@ -205,8 +181,10 @@ button:disabled {
 
 .service-image {
   width: 100%;
-  height: 150px;
-  object-fit: cover;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
   border-radius: 8px;
 }
 
@@ -216,12 +194,79 @@ button:disabled {
   margin-top: 3rem;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .service-detail-image {
   width: 100%;
-  height: 300px;
-  object-fit: cover;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
   border-radius: 8px;
   margin-top: 1rem;
+}
+
+/* Media query-k a reszponzivitás finomhangolásához */
+@media (max-width: 600px) {
+  .services-container {
+    padding: 1rem;
+  }
+
+  .services-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .cards-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .service-card {
+    padding: 0.5rem;
+  }
+
+  .service-image {
+    height: auto;
+  }
+
+  .service-details {
+    padding: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .service-detail-image {
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+  .cards-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .services-title {
+    font-size: 1.8rem;
+  }
+
+  .service-card {
+    padding: 0.8rem;
+  }
+}
+
+@media (min-width: 901px) {
+  .cards-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .services-title {
+    font-size: 2rem;
+  }
+
+  .service-card {
+    padding: 1rem;
+  }
 }

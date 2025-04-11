@@ -8,6 +8,7 @@ export default function SignIn() {
         email: '',
         password: '',
     });
+    const [submitMessage, setSubmitMessage] = useState(''); // Üzenet a bejelentkezés eredményéről
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -17,13 +18,36 @@ export default function SignIn() {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Bejelentkezési adatok:', formData);
+
+        try {
+            const response = await fetch('http://localhost:5000/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: formData.email,
+                    password: formData.password,
+                }),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                setSubmitMessage('Sikeres bejelentkezés!');
+                setFormData({ email: '', password: '' }); // Űrlap ürítése
+            } else {
+                setSubmitMessage(`Hiba: ${result.message}`);
+            }
+        } catch (error) {
+            setSubmitMessage('Hiba történt. Kérlek, próbáld újra!');
+            console.error('Error during login:', error);
+        }
     };
 
     return (
-        <div className="sign-up-container"> {/* Reusing the same container class as SignUp */}
+        <div className="sign-up-container">
             <div className="sign-up-box">
                 <h1>Sign In!</h1>
                 <form onSubmit={handleSubmit}>
@@ -51,7 +75,6 @@ export default function SignIn() {
                             required
                         />
                     </div>
-                    {/* Link to SignUp page for users without an account */}
                     <p className="signin-link-container">
                         Haven't registered yet?{' '}
                         <Link to="/sign-up" className="signin-link">
@@ -59,6 +82,11 @@ export default function SignIn() {
                         </Link>
                     </p>
                     <button type="submit">Sign In</button>
+                    {submitMessage && (
+                        <p style={{ color: submitMessage.includes('Hiba') ? 'red' : 'green' }}>
+                            {submitMessage}
+                        </p>
+                    )}
                 </form>
             </div>
         </div>

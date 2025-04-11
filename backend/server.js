@@ -70,6 +70,39 @@ app.post('/register', async (req, res) => {
   }
 });
 
+// Bejelentkezési endpoint
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email és jelszó megadása kötelező!' });
+  }
+
+  try {
+    // Felhasználó keresése email alapján
+    const [rows] = await db.execute('SELECT * FROM users WHERE Email = ?', [email]);
+
+    if (rows.length === 0) {
+      return res.status(401).json({ message: 'Hibás email vagy jelszó!' });
+    }
+
+    const user = rows[0];
+
+    // Jelszó ellenőrzése
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Hibás email vagy jelszó!' });
+    }
+
+    // Sikeres bejelentkezés
+    res.json({ message: 'Sikeres bejelentkezés!', userId: user.UserID });
+  } catch (error) {
+    console.error('Error during login:', error);
+    res.status(500).json({ message: 'Szerver hiba történt!' });
+  }
+});
+
 // Rendezvények lekérdezése endpoint
 app.get('/api/rendezvenyek', async (req, res) => {
   try {

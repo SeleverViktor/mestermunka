@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { format } from 'date-fns'; // Importáljuk a format függvényt
+import { hu } from 'date-fns/locale'; // Magyar lokalizáció
 import '../../App.css';
 import '../../assets/Navbar';
 
@@ -8,11 +10,9 @@ export default function Services() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // API-ból adatok lekérése useEffect-tel
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        // Feltételezett API endpoint, amely a rendezvényeket adja vissza
         const response = await fetch('http://localhost:5000/api/rendezvenyek');
         if (!response.ok) {
           throw new Error('Hiba történt az adatok lekérése során');
@@ -27,13 +27,18 @@ export default function Services() {
     };
 
     fetchEvents();
-  }, []); // Üres dependency array, csak egyszer fut le komponens betöltésekor
+  }, []);
 
   const handleCardClick = (event) => {
     setSelectedService(event);
   };
 
-  // Betöltés és hiba kezelése
+  // Dátum formázó függvény date-fns használatával
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return format(date, 'yyyy. MMMM d.', { locale: hu }); // Pl. 2025. április 5.
+  };
+
   if (loading) {
     return <div className="services-container">Betöltés...</div>;
   }
@@ -58,9 +63,13 @@ export default function Services() {
               className="service-image"
             />
             <h3>{event.RNeve}</h3>
-            <p><strong>Dátum:</strong> {event.Datum}</p>
+            <p><strong>Dátum:</strong> {formatDate(event.Datum)}</p>
             <p><strong>Kezdet:</strong> {event.Start}</p>
             <p><strong>Helyszín:</strong> {event.Helyszin}</p>
+            <p>
+              <strong>Zene Stílus:</strong>{' '}
+              {event.Zene ? event.Zene : 'Nincs megadva'}
+            </p>
           </div>
         ))}
       </div>
@@ -69,9 +78,13 @@ export default function Services() {
         <div className="service-details">
           <h2>{selectedService.RNeve}</h2>
           <p>{selectedService.Leiras}</p>
-          <p><strong>Dátum:</strong> {selectedService.Datum}</p>
+          <p><strong>Dátum:</strong> {formatDate(selectedService.Datum)}</p>
           <p><strong>Kezdet:</strong> {selectedService.Start}</p>
           <p><strong>Helyszín:</strong> {selectedService.Helyszin}</p>
+          <p>
+            <strong>Zene Stílus:</strong>{' '}
+            {selectedService.Zene ? selectedService.Zene : 'Nincs megadva'}
+          </p>
           <img
             src={selectedService.pictures || 'https://via.placeholder.com/150'}
             alt={selectedService.RNeve}

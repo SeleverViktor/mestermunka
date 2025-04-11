@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { format } from 'date-fns'; // Importáljuk a format függvényt
+import { hu } from 'date-fns/locale'; // Magyar lokalizáció
 import '../../App.css';
 import '../../assets/Navbar';
 
@@ -29,6 +31,12 @@ export default function Profile() {
     fetchUserData();
   }, []);
 
+  // Dátum formázó függvény date-fns használatával
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return format(date, 'yyyy. MMMM d.', { locale: hu }); // Pl. 2005. március 14.
+  };
+
   if (error) {
     return (
       <div className="profile-container">
@@ -55,7 +63,9 @@ export default function Profile() {
         />
         <h2 className="profile-name">{userData.Name}</h2>
         <p className="profile-email">Email: {userData.Email}</p>
-        <p className="profile-birthdate">Születési dátum: {userData.BirthDate}</p>
+        <p className="profile-birthdate">
+          Születési dátum: {formatDate(userData.BirthDate)}
+        </p>
       </div>
     </div>
   );

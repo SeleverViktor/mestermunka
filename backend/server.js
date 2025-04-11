@@ -120,7 +120,23 @@ app.get('/profile/:userId', async (req, res) => {
 // Rendezvények lekérdezése endpoint
 app.get('/api/rendezvenyek', async (req, res) => {
   try {
-    const [rows] = await db.execute('SELECT * FROM rendezveny');
+    const [rows] = await db.execute(`
+      SELECT 
+        r.RendezvenyID,
+        r.RNeve,
+        r.Leiras,
+        r.Datum,
+        r.Helyszin,
+        r.pictures,
+        r.Start,
+        z.StilusNev AS Zene
+      FROM 
+        rendezveny r
+      LEFT JOIN 
+        zenestilus z
+      ON 
+        r.ZeneId = z.ZeneStilusID
+    `);
     res.json(rows);
   } catch (error) {
     console.error('Error fetching events:', error);

@@ -1,9 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const mysql = require('mysql2/promise'); // Promise-alapú MySQL
+const mysql = require('mysql2/promise');
 const bcrypt = require('bcrypt');
-require('dotenv').config(); // Környezeti változók betöltése
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -30,7 +30,7 @@ const initializeDatabase = async () => {
     console.log('Connected to MySQL database');
   } catch (err) {
     console.error('Error connecting to MySQL:', err);
-    process.exit(1); // Kilépés, ha nem sikerül a csatlakozás
+    process.exit(1);
   }
 };
 
@@ -79,7 +79,6 @@ app.post('/login', async (req, res) => {
   }
 
   try {
-    // Felhasználó keresése email alapján
     const [rows] = await db.execute('SELECT * FROM users WHERE Email = ?', [email]);
 
     if (rows.length === 0) {
@@ -87,19 +86,34 @@ app.post('/login', async (req, res) => {
     }
 
     const user = rows[0];
-
-    // Jelszó ellenőrzése
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
       return res.status(401).json({ message: 'Hibás email vagy jelszó!' });
     }
 
-    // Sikeres bejelentkezés
     res.json({ message: 'Sikeres bejelentkezés!', userId: user.UserID });
   } catch (error) {
     console.error('Error during login:', error);
     res.status(500).json({ message: 'Szerver hiba történt!' });
+  }
+});
+
+// Profil adatok lekérdezése endpoint
+app.get('/profile/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const [rows] = await db.execute('SELECT UserID, Email, Name, BirthDate FROM users WHERE UserID = ?', [userId]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'Felhasználó nem található!' });
+    }
+
+    res.json(rows[0]);
+  } catch (error) {
+    console.error('Error fetching profile:', error);
+    res.status(500).json({ message: 'Szerver hiba történt a profil lekérdezésekor!' });
   }
 });
 

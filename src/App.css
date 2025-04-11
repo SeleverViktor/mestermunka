@@ -163,7 +163,7 @@ button:disabled {
 }
 
 .service-card {
-  background-color: rgba(255, 255, 255, 0.8); /* Áttetsző fehér háttér */
+  background-color: rgba(255, 255, 255, 0.8);
   padding: 1rem;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -206,6 +206,92 @@ button:disabled {
   object-fit: contain;
   border-radius: 8px;
   margin-top: 1rem;
+}
+
+/* Profile CSS */
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-image: url('../public/images/kep2.jpg'); /* Háttérkép a profil oldalhoz */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.profile-card {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+}
+
+.profile-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1.5rem;
+  border: 3px solid #4CAF50;
+}
+
+.profile-name {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-family: 'Arial', sans-serif;
+}
+
+.profile-email,
+.profile-birthdate {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+/* Reszponzív módosítások a Profile oldalhoz */
+@media (max-width: 600px) {
+  .profile-container {
+    padding: 1rem;
+  }
+
+  .profile-card {
+    padding: 1.5rem;
+    max-width: 350px;
+  }
+
+  .profile-image {
+    width: 120px;
+    height: 120px;
+  }
+
+  .profile-name {
+    font-size: 1.5rem;
+  }
+
+  .profile-email,
+  .profile-birthdate {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+  .profile-card {
+    max-width: 400px;
+  }
+
+  .profile-image {
+    width: 130px;
+    height: 130px;
+  }
+
+  .profile-name {
+    font-size: 1.8rem;
+  }
 }
 
 /* Media query-k a reszponzivitás finomhangolásához */

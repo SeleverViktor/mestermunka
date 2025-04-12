@@ -11,6 +11,7 @@ export default function Profile() {
   const [loading, setLoading] = useState(true);
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
 
   // Statikus képlista a public/images mappából
@@ -23,6 +24,7 @@ export default function Profile() {
     '/public/images/purple.jpg',
   ];
   const defaultImage = '/public/images/green.jpg';
+  const fallbackImage = '/public/images/green.jpg'; // Fallback kép, ha a betöltés sikertelen
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -55,6 +57,7 @@ export default function Profile() {
     fetchUserData();
   }, []);
 
+  // Kijelentkezés kezelése
   const handleLogout = async () => {
     try {
       await fetch('http://localhost:5000/logout', {
@@ -72,20 +75,25 @@ export default function Profile() {
     }
   };
 
+  // Profilkép szerkesztés modal megnyitása
   const handleEditImage = () => {
     setShowImageModal(true);
+    setSuccessMessage('');
   };
 
+  // Modal bezárása
   const handleCloseModal = () => {
     setShowImageModal(false);
-    // Ha bezárjuk a modalt mentés nélkül, visszaállítjuk a kiválasztott képet az eredetire
-    setSelectedImage(userData.ProfilePicture || defaultImage);
+    setSuccessMessage('');
+    setSelectedImage(userData?.ProfilePicture || defaultImage);
   };
 
+  // Kép kiválasztása a modalban
   const handleImageSelect = (image) => {
     setSelectedImage(image);
   };
 
+  // Profilkép mentése
   const handleSaveImage = async () => {
     const userId = localStorage.getItem('userId');
     if (!userId) return;
@@ -106,19 +114,41 @@ export default function Profile() {
       }
 
       const result = await response.json();
-      alert(result.message);
+      setSuccessMessage(result.message);
       setUserData({ ...userData, ProfilePicture: selectedImage === defaultImage ? null : selectedImage });
-      setShowImageModal(false);
+
+      // Üzenet eltüntetése és modal bezárása 3 másodperc után
+      setTimeout(() => {
+        setSuccessMessage('');
+        setShowImageModal(false);
+      }, 1500);
     } catch (error) {
-      alert(error.message);
+      setSuccessMessage(error.message);
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 1500);
     }
   };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return format(date, 'yyyy. MMMM d.', { locale: hu });
+  // Kép betöltési hiba kezelése
+  const handleImageError = (e) => {
+    e.target.src = fallbackImage;
   };
 
+  // Dátum formázása
+  const formatDate = (dateString) => {
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        return 'Érvénytelen dátum';
+      }
+      return format(date, 'yyyy. MMMM d.', { locale: hu });
+    } catch {
+      return 'Érvénytelen dátum';
+    }
+  };
+
+  // Betöltés állapot
   if (loading) {
     return (
       <div className="profile-container">
@@ -127,6 +157,7 @@ export default function Profile() {
     );
   }
 
+  // Hibaüzenet megjelenítése
   if (error) {
     return (
       <div className="profile-container">
@@ -140,6 +171,7 @@ export default function Profile() {
     );
   }
 
+  // Ha nincs felhasználói adat
   if (!userData) {
     return (
       <div className="profile-container">
@@ -155,9 +187,10 @@ export default function Profile() {
           src={userData.ProfilePicture || defaultImage}
           alt="Profilepicture"
           className="profile-image"
+          onError={handleImageError}
         />
-        <h2 className="profile-name">Hi, {userData.Name}</h2>
-        <p className="profile-email">Email: {userData.Email}</p>
+        <h2 className="profile-name">Hi, {userData.Name || 'Felhasználó'}</h2>
+        <p className="profile-email">Email: {userData.Email || 'Nincs email'}</p>
         <p className="profile-birthdate">
           Birth Date: {formatDate(userData.BirthDate)}
         </p>
@@ -180,10 +213,14 @@ export default function Profile() {
                       src={image}
                       alt={image.split('/').pop()}
                       className="thumbnail"
+                      onError={handleImageError}
                     />
                   </div>
                 ))}
               </div>
+              {successMessage && (
+                <p className="success-message">{successMessage}</p>
+              )}
               <div className="modal-buttons">
                 <button className="sign-in-link" onClick={handleCloseModal}>
                   Close

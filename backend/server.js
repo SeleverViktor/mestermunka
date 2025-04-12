@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysql = require('mysql2/promise');
 const bcrypt = require('bcrypt');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -11,6 +12,18 @@ const port = process.env.PORT || 5000;
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
+
+// Statikus fájlok kiszolgálása a public mappából
+app.use('/public', express.static(path.join(__dirname, '../public'), {
+  setHeaders: (res, filePath) => {
+    // MIME-típusok manuális beállítása
+    if (filePath.endsWith('.png')) {
+      res.setHeader('Content-Type', 'image/png');
+    } else if (filePath.endsWith('.jpeg') || filePath.endsWith('.jpg')) {
+      res.setHeader('Content-Type', 'image/jpeg');
+    }
+  },
+}));
 
 // Adatbázis konfiguráció környezeti változókból
 const dbConfig = {
@@ -55,8 +68,8 @@ app.post('/register', async (req, res) => {
     const isAdult = age >= 18 ? 1 : 0;
 
     const query = `
-      INSERT INTO users (Email, Name, BirthDate, IsAdult, Consent, password)
-      VALUES (?, ?, ?, ?, ?, ?)
+      INSERT INTO users (Email, Name, BirthDate, IsAdult, Consent, password, ProfilePicture)
+      VALUES (?, ?, ?, ?, ?, ?, NULL)
     `;
     const [result] = await db.execute(query, [email, username, birthDate, isAdult, 1, hashedPassword]);
 
@@ -104,7 +117,7 @@ app.get('/profile/:userId', async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const [rows] = await db.execute('SELECT UserID, Email, Name, BirthDate FROM users WHERE UserID = ?', [userId]);
+    const [rows] = await db.execute('SELECT UserID, Email, Name, BirthDate, ProfilePicture FROM users WHERE UserID = ?', [userId]);
 
     if (rows.length === 0) {
       return res.status(404).json({ message: 'Felhasználó nem található!' });
@@ -114,6 +127,38 @@ app.get('/profile/:userId', async (req, res) => {
   } catch (error) {
     console.error('Error fetching profile:', error);
     res.status(500).json({ message: 'Szerver hiba történt a profil lekérdezésekor!' });
+  }
+});
+
+// Profilkép frissítése endpoint
+app.post('/profile/:userId/update', async (req, res) => {
+  const { userId } = req.params;
+  const { profilePicture } = req.body;
+
+  try {
+    const [result] = await db.execute(
+      'UPDATE users SET ProfilePicture = ? WHERE UserID = ?',
+      [profilePicture || null, userId]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Felhasználó nem található!' });
+    }
+
+    res.json({ message: 'Profilkép sikeresen frissítve!' });
+  } catch (error) {
+    console.error('Error updating profile picture:', error);
+    res.status(500).json({ message: 'Szerver hiba történt a profilkép frissítésekor!' });
+  }
+});
+
+// Kijelentkezési endpoint
+app.post('/logout', (req, res) => {
+  try {
+    res.json({ message: 'Sikeres kijelentkezés!' });
+  } catch (error) {
+    console.error('Error during logout:', error);
+    res.status(500).json({ message: 'Szerver hiba történt a kijelentkezéskor!' });
   }
 });
 

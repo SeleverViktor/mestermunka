@@ -3,7 +3,7 @@ import { format } from 'date-fns'; // Importáljuk a format függvényt
 import { hu } from 'date-fns/locale'; // Magyar lokalizáció
 import '../../App.css';
 import '../../assets/Navbar';
-import Footer from '../Footer';
+
 
 export default function Services() {
   const [events, setEvents] = useState([]);
@@ -16,7 +16,7 @@ export default function Services() {
       try {
         const response = await fetch('http://localhost:5000/api/rendezvenyek');
         if (!response.ok) {
-          throw new Error('Hiba történt az adatok lekérése során');
+          throw new Error('ERROR : cant read your data');
         }
         const data = await response.json();
         setEvents(data);
@@ -41,16 +41,16 @@ export default function Services() {
   };
 
   if (loading) {
-    return <div className="services-container">Betöltés...</div>;
+    return <div className="services-container">Loading...</div>;
   }
 
   if (error) {
-    return <div className="services-container">Hiba: {error}</div>;
+    return <div className="services-container">ERROR: {error}</div>;
   }
 
   return (
     <div className="services-container">
-      <h1 className="services-title">Rendezvényeink</h1>
+      <h1 className="services-title">Parties</h1>
       <div className="cards-container">
         {events.map((event) => (
           <div
@@ -64,12 +64,12 @@ export default function Services() {
               className="service-image"
             />
             <h3>{event.RNeve}</h3>
-            <p><strong>Dátum:</strong> {formatDate(event.Datum)}</p>
-            <p><strong>Kezdet:</strong> {event.Start}</p>
-            <p><strong>Helyszín:</strong> {event.Helyszin}</p>
+            <p><strong>Date:</strong> {formatDate(event.Datum)}</p>
+            <p><strong>Start:</strong> {event.Start}</p>
+            <p><strong>Location:</strong> {event.Helyszin}</p>
             <p>
-              <strong>Zene Stílus:</strong>{' '}
-              {event.Zene ? event.Zene : 'Nincs megadva'}
+              <strong>Music Style:</strong>{' '}
+              {event.Zene ? event.Zene : 'not given'}
             </p>
           </div>
         ))}
@@ -79,12 +79,12 @@ export default function Services() {
         <div className="service-details">
           <h2>{selectedService.RNeve}</h2>
           <p>{selectedService.Leiras}</p>
-          <p><strong>Dátum:</strong> {formatDate(selectedService.Datum)}</p>
-          <p><strong>Kezdet:</strong> {selectedService.Start}</p>
-          <p><strong>Helyszín:</strong> {selectedService.Helyszin}</p>
+          <p><strong>Date:</strong> {formatDate(selectedService.Datum)}</p>
+          <p><strong>Start:</strong> {selectedService.Start}</p>
+          <p><strong>Location:</strong> {selectedService.Helyszin}</p>
           <p>
-            <strong>Zene Stílus:</strong>{' '}
-            {selectedService.Zene ? selectedService.Zene : 'Nincs megadva'}
+            <strong>Music Style:</strong>{' '}
+            {selectedService.Zene ? selectedService.Zene : 'not given'}
           </p>
           <img
             src={selectedService.pictures || 'https://via.placeholder.com/150'}
@@ -93,7 +93,7 @@ export default function Services() {
           />
         </div>
       )}
-        <Footer/>
+        
     </div>
   );
 }

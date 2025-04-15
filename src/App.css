@@ -180,10 +180,10 @@ button:disabled {
 }
 
 .service-image {
-  width: 100%;
+  width: 400px;
   max-width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
+  height: 300px;
+  
   object-fit: contain;
   border-radius: 8px;
 }
@@ -202,7 +202,7 @@ button:disabled {
 .service-detail-image {
   width: 100%;
   max-width: 100%;
-  height: auto;
+  height: 600px;
   object-fit: contain;
   border-radius: 8px;
   margin-top: 1rem;

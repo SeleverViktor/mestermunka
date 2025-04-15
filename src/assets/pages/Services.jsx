@@ -3,6 +3,7 @@ import { format } from 'date-fns'; // Importáljuk a format függvényt
 import { hu } from 'date-fns/locale'; // Magyar lokalizáció
 import '../../App.css';
 import '../../assets/Navbar';
+import Footer from '../Footer';
 
 export default function Services() {
   const [events, setEvents] = useState([]);
@@ -92,6 +93,7 @@ export default function Services() {
           />
         </div>
       )}
+        <Footer/>
     </div>
   );
 }

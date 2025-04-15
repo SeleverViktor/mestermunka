@@ -1,6 +1,5 @@
 import React from 'react';
 import './Footer.css';
-import { Button } from './Button';
 import { Link } from 'react-router-dom';
 
 function Footer() {
@@ -8,46 +7,12 @@ function Footer() {
     <div className='footer-container'>
       <section className='footer-subscription'>
         <p className='footer-subscription-heading'>
-          Join the Adventure newsletter to receive our best vacation deals
+          Let's make things faster
         </p>
         <p className='footer-subscription-text'>
-          You can unsubscribe at any time.
+          You can find parties anytime
         </p>
-        <div className='input-areas'>
-          <form>
-            <input
-              className='footer-input'
-              name='email'
-              type='email'
-              placeholder='Your Email'
-            />
-            <Button buttonStyle='btn--outline'>Subscribe</Button>
-          </form>
-        </div>
       </section>
-      <div className='footer-links'>
-        <div className='footer-link-wrapper'>
-          <div className='footer-link-items'>
-            <h2>About Us</h2>
-            <Link to='/sign-up'>How it works</Link>
-            <Link to='/'>Testimonials</Link>
-            <Link to='/'>Careers</Link>
-            <Link to='/'>Investors</Link>
-            <Link to='/'>Terms of Service</Link>
-          </div>
-          <div className='footer-link-items'>
-            <h2>Contact Us</h2>
-            <Link to='/'>Contact</Link>
-            <Link to='/'>Support</Link>
-            <Link to='/'>Destinations</Link>
-            <Link to='/'>Sponsorships</Link>
-          </div>
-        </div>
-        <div className='footer-link-wrapper'>
-          
-          
-        </div>
-      </div>
       <section className='social-media'>
         <div className='social-media-wrap'>
           <div className='footer-logo'>
@@ -60,7 +25,7 @@ function Footer() {
           <div className='social-icons'>
             <Link
               className='social-icon-link facebook'
-              to='/'
+              to='https://www.bing.com/search?q=facebook&qs=n&form=QBRE&sp=-1&ghc=1&lq=0&pq=facebook&sc=16-8&sk=&cvid=B85E3964110D44229815F93855B917C9'
               target='_blank'
               aria-label='Facebook'
             >
@@ -68,7 +33,7 @@ function Footer() {
             </Link>
             <Link
               className='social-icon-link instagram'
-              to='/'
+              to='https://www.bing.com/search?pglt=43&q=instagram&cvid=e174657abfd44a8780e18a23f8b322c0&gs_lcrp=EgRlZGdlKgYIABBFGDkyBggAEEUYOTIGCAEQABhAMgYIAhAAGEAyBggDEAAYQDIGCAQQABhAMgYIBRAAGEAyBggGEAAYQDIGCAcQABhAMgYICBAAGEAyCAgJEOkHGPxV0gEIMjEyMmowajGoAgCwAgA&FORM=ANNAB1&ucpdpc=UCPD&PC=U531'
               target='_blank'
               aria-label='Instagram'
             >
@@ -76,7 +41,7 @@ function Footer() {
             </Link>
             <Link
               className='social-icon-link youtube'
-              to='/'
+              to='https://www.youtube.com/watch?v=oswYlsaUFgQ'
               target='_blank'
               aria-label='Youtube'
             >
@@ -84,20 +49,13 @@ function Footer() {
             </Link>
             <Link
               className='social-icon-link twitter'
-              to='/'
+              to='https://www.bing.com/search?qs=AS&pq=twitter&sk=CSYN1AS1&sc=16-7&pglt=43&q=twitter+login&cvid=131aa02507154b0691b8e4855dc26485&gs_lcrp=EgRlZGdlKgYIAhAAGEAyBggAEEUYOTIGCAEQABhAMgYIAhAAGEAyBggDEAAYQDIGCAQQABhAMgYIBRAAGEAyBggGEAAYQDIGCAcQABhAMgYICBAAGEAyCAgJEOkHGPIHMggIChDpBxj8VdIBCDQwOTNqMGoxqAIAsAIA&FORM=ANNAB1&ucpdpc=UCPD&PC=U531'
               target='_blank'
               aria-label='Twitter'
             >
               <i className='fab fa-twitter' />
             </Link>
-            <Link
-              className='social-icon-link twitter'
-              to='/'
-              target='_blank'
-              aria-label='LinkedIn'
-            >
-              <i className='fab fa-linkedin' />
-            </Link>
+           
           </div>
         </div>
       </section>

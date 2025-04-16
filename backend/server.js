@@ -16,10 +16,9 @@ app.use(cors());
 // Statikus fájlok kiszolgálása a public mappából
 app.use('/public', express.static(path.join(__dirname, '../public'), {
   setHeaders: (res, filePath) => {
-    // MIME-típusok manuális beállítása
     if (filePath.endsWith('.png')) {
       res.setHeader('Content-Type', 'image/png');
-    } else if (filePath.endsWith('.jpeg') || filePath.endsWith('.jpg')) {
+    } else if (filePath.endsWith('.jpg')) {
       res.setHeader('Content-Type', 'image/jpeg');
     }
   },
@@ -31,7 +30,7 @@ const dbConfig = {
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'partyez',
-  port: process.env.DB_PORT || 3307,
+  port: process.env.DB_PORT || 3306,
 };
 
 // Adatbázis kapcsolat inicializálása
@@ -186,6 +185,123 @@ app.get('/api/rendezvenyek', async (req, res) => {
   } catch (error) {
     console.error('Error fetching events:', error);
     res.status(500).json({ message: 'Szerver hiba történt az események lekérdezésekor!' });
+  }
+});
+
+// Felhasználó jelentkezése egy rendezvényre
+app.post('/api/reszvetel', async (req, res) => {
+  const { userId, rendezvenyId } = req.body;
+
+  if (!userId || !rendezvenyId) {
+    return res.status(400).json({ message: 'UserID és RendezvenyID megadása kötelező!' });
+  }
+
+  try {
+    const parsedUserId = parseInt(userId);
+    const parsedRendezvenyId = parseInt(rendezvenyId);
+
+    if (isNaN(parsedUserId) || isNaN(parsedRendezvenyId)) {
+      return res.status(400).json({ message: 'UserID és RendezvenyID szám típusú kell legyen!' });
+    }
+
+    const [userRows] = await db.execute('SELECT UserID FROM users WHERE UserID = ?', [parsedUserId]);
+    if (userRows.length === 0) {
+      return res.status(404).json({ message: 'Felhasználó nem található!' });
+    }
+
+    const [eventRows] = await db.execute('SELECT RendezvenyID FROM rendezveny WHERE RendezvenyID = ?', [parsedRendezvenyId]);
+    if (eventRows.length === 0) {
+      return res.status(404).json({ message: 'Rendezvény nem található!' });
+    }
+
+    const [existingRegistration] = await db.execute(
+      'SELECT UserID FROM reszvevok WHERE UserID = ? AND RendezvenyID = ?',
+      [parsedUserId, parsedRendezvenyId]
+    );
+    if (existingRegistration.length > 0) {
+      return res.status(400).json({ message: 'Már jelentkezett erre a rendezvényre!' });
+    }
+
+    const [result] = await db.execute(
+      'INSERT INTO reszvevok (UserID, RendezvenyID) VALUES (?, ?)',
+      [parsedUserId, parsedRendezvenyId]
+    );
+
+    res.json({ message: 'Sikeres jelentkezés a rendezvényre!' });
+  } catch (error) {
+    console.error('Error during event registration:', error);
+    if (error.code === 'ER_DUP_ENTRY') {
+      return res.status(400).json({ message: 'Már jelentkezett erre a rendezvényre!' });
+    }
+    if (error.code === 'ER_NO_REFERENCED_ROW_2') {
+      return res.status(400).json({ message: 'Érvénytelen UserID vagy RendezvenyID: a hivatkozott rekord nem létezik!' });
+    }
+    res.status(500).json({ message: 'Szerver hiba történt a jelentkezés során!', error: error.message });
+  }
+});
+
+// Új endpoint: Felhasználó jelentkezéseinek lekérdezése
+app.get('/api/reszvetel/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const parsedUserId = parseInt(userId);
+    if (isNaN(parsedUserId)) {
+      return res.status(400).json({ message: 'UserID szám típusú kell legyen!' });
+    }
+
+    const [rows] = await db.execute(`
+      SELECT 
+        r.RendezvenyID,
+        r.RNeve,
+        r.Leiras,
+        r.Datum,
+        r.Helyszin,
+        r.pictures,
+        r.Start,
+        z.StilusNev AS Zene
+      FROM 
+        reszvevok rs
+      JOIN 
+        rendezveny r ON rs.RendezvenyID = r.RendezvenyID
+      LEFT JOIN 
+        zenestilus z ON r.ZeneId = z.ZeneStilusID
+      WHERE 
+        rs.UserID = ?
+    `, [parsedUserId]);
+
+    res.json(rows);
+  } catch (error) {
+    console.error('Error fetching user registrations:', error);
+    res.status(500).json({ message: 'Szerver hiba történt a jelentkezések lekérdezésekor!' });
+  }
+});
+
+// Új endpoint: Jelentkezés törlése
+app.delete('/api/reszvetel/:userId/:rendezvenyId', async (req, res) => {
+  const { userId, rendezvenyId } = req.params;
+
+  try {
+    const parsedUserId = parseInt(userId);
+    const parsedRendezvenyId = parseInt(rendezvenyId);
+
+    if (isNaN(parsedUserId) || isNaN(parsedRendezvenyId)) {
+      return res.status(400).json({ message: 'UserID és RendezvenyID szám típusú kell legyen!' });
+    }
+
+    const [result] = await db.execute(
+      'DELETE FROM reszvevok WHERE UserID = ? AND RendezvenyID = ?',
+      [parsedUserId, parsedRendezvenyId]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Jelentkezés nem található!' });
+    }
+
+    res.json({ message: 'Jelentkezés sikeresen törölve!' });
+  } catch (error) {
+    console.error('Error deleting registration:', error);
+    res.status(500).json({ message: 'Szerver hiba történt a jelentkezés törlésekor!' });
   }
 });
 

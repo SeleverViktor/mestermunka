@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Ápr 14. 12:21
+-- Létrehozás ideje: 2025. Ápr 16. 09:54
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -53,7 +53,8 @@ INSERT INTO `bulihely` (`HelyID`, `HelyNev`, `Stilus`, `ZeneStilusID`, `Orszag`,
 (8, 'Corvin Klub', 'underground', 7, 'Magyarország', 'Budapest', '1082 Budapest, Üllői út 4.'),
 (9, 'Központ', 'postmodern', 5, 'Magyarország', 'Budapest', '1065 Budapest, Nagymező utca 44.'),
 (10, 'MOM Park Éjszakai Klub', 'elegant', 8, 'Magyarország', 'Budapest', ' 1117 Budapest, Pesti út 138. (MOM Park bevásárlók'),
-(11, 'Papp László Budapest Sportaréna​', 'indie', 6, 'Magyarország', 'Budapest', 'Papp László Budapest Sportaréna​');
+(11, 'Papp László Budapest Sportaréna​', 'indie', 6, 'Magyarország', 'Budapest', 'Papp László Budapest Sportaréna​'),
+(12, 'SzabadságTér', 'bohem', 2, 'Magyarország', 'Budapest', 'Szabadság tér 1., 1054');
 
 -- --------------------------------------------------------
 
@@ -116,11 +117,11 @@ CREATE TABLE `rendezveny` (
 --
 
 INSERT INTO `rendezveny` (`RendezvenyID`, `BuliID`, `RNeve`, `Leiras`, `Datum`, `Helyszin`, `pictures`, `Start`, `ZeneId`) VALUES
-(1, NULL, 'XLIV. Országos Táncháztalálkozó és Kirakodóvásár', 'Az élő népművészet összművészeti fesztiválja, ahol táncházak, népművészeti vásár és gálaműsorok várják a látogatókat. ', '2025-04-06', 'Papp László Budapest Sportarén', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/little.jpg', '18:30', 3),
-(2, NULL, 'Szent Patrik Fesztivál és Felvonulás​', 'Ír kultúrát ünneplő rendezvény felvonulással, élő zenével, tánccal és ír ételekkel. ', '2025-03-16', 'Szabadság tér', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/rave.jpeg', '19:00', 3),
-(3, NULL, 'Fatal Error lemezbemutató és búcsúkoncert​', 'A 14 éves fennállását lezáró zenekar különleges koncerttel búcsúzik, vendégként a The Pontiac zenekarral.', '2025-03-21', 'A38 Hajó', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/tanchaz.jpg', '18:00', 6),
-(4, NULL, 'Airbourne koncert​', 'Az ausztrál hard rock zenekar energikus koncertje, amely ismét felrázza a budapesti közönséget.', '2025-03-25', 'Akvárium Klub​', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/hippik.jpg', '23:00', 6),
-(5, NULL, 'Konyhakiállítás 2025', 'Magyarország legnagyobb konyhabútorokat, konyhagépeket és konyhai eszközöket bemutató kiállítása, több mint 100 kiállítóval.', '2025-05-28', 'Papp László Budapest Sportarén', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/sisi.jpg', '22:30', 5),
+(1, 11, 'XLIV. Országos Táncháztalálkozó és Kirakodóvásár', 'Az élő népművészet összművészeti fesztiválja, ahol táncházak, népművészeti vásár és gálaműsorok várják a látogatókat. ', '2025-04-06', 'Papp László Budapest Sportarén', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/little.jpg', '18:30', 3),
+(2, 12, 'Szent Patrik Fesztivál és Felvonulás​', 'Ír kultúrát ünneplő rendezvény felvonulással, élő zenével, tánccal és ír ételekkel. ', '2025-03-16', 'Szabadság tér', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/rave.jpeg', '19:00', 3),
+(3, 6, 'Fatal Error lemezbemutató és búcsúkoncert​', 'A 14 éves fennállását lezáró zenekar különleges koncerttel búcsúzik, vendégként a The Pontiac zenekarral.', '2025-03-21', 'A38 Hajó', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/tanchaz.jpg', '18:00', 6),
+(4, 2, 'Airbourne koncert​', 'Az ausztrál hard rock zenekar energikus koncertje, amely ismét felrázza a budapesti közönséget.', '2025-03-25', 'Akvárium Klub​', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/hippik.jpg', '23:00', 6),
+(5, 11, 'Konyhakiállítás 2025', 'Magyarország legnagyobb konyhabútorokat, konyhagépeket és konyhai eszközöket bemutató kiállítása, több mint 100 kiállítóval.', '2025-05-28', 'Papp László Budapest Sportarén', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/sisi.jpg', '22:30', 5),
 (6, 6, 'Sziget Fesztivál', 'A világ egyik legnagyobb zenei és kulturális fesztiválja, amely 2025. augusztus 6. és 11. között kerül megrendezésre Budapesten, a Hajógyári-szigeten. A rendezvényen világszintű előadók és változatos programok várják a látogatókat.', '2025-06-06', 'Hajógyári-sziget', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/sziget.jpg', '08:00:00', 6);
 
 -- --------------------------------------------------------
@@ -131,9 +132,17 @@ INSERT INTO `rendezveny` (`RendezvenyID`, `BuliID`, `RNeve`, `Leiras`, `Datum`, 
 
 DROP TABLE IF EXISTS `reszvevok`;
 CREATE TABLE `reszvevok` (
-  `RendID` int(11) NOT NULL,
-  `UserID` int(11) DEFAULT NULL
+  `RendezvenyID` int(11) NOT NULL,
+  `UserID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- A tábla adatainak kiíratása `reszvevok`
+--
+
+INSERT INTO `reszvevok` (`RendezvenyID`, `UserID`) VALUES
+(5, 12),
+(5, 13);
 
 -- --------------------------------------------------------
 
@@ -162,8 +171,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`UserID`, `Email`, `Name`, `BirthDate`, `IsAdult`, `Consent`, `RegistrationDate`, `ModifiedDate`, `password`, `ProfilePicture`) VALUES
 (10, '19790213sziszko@gmail.com', 'tesztnev', '2003-07-10', 1, 1, '2025-04-12 12:13:15', '2025-04-12 17:17:32', '$2b$10$bwvKr2gwYC.Q9Q2Nc0lCLusOPJMBxu0BDi9SciTTMsGpn8dUR4PG2', '/public/images/yellow.jpg'),
 (11, 'jani.vok.gaming@gmail.com', 'tesztnev', '2005-04-16', 1, 1, '2025-04-12 16:53:51', '2025-04-12 17:17:19', '$2b$10$NU7Nrg5Y7OMg.QcOYmd33.TsgmGVrqfiLNd0ANsNrnTrQwqfoHQ.u', '/public/images/gray.jpg'),
-(12, 'tesztemail2@gmail.com', 'tesztnev', '2004-06-13', 1, 1, '2025-04-12 17:22:59', '2025-04-12 17:23:24', '$2b$10$B7Nvwnn0yDSNsMwZWHAxMu5wYr.XicNLDPP3PO7ozrLB9CaByNb5S', '/public/images/red.jpg'),
-(13, 'tesztemail@gmail.com', 'tesztnev', '2004-02-04', 1, 1, '2025-04-12 17:25:17', '2025-04-12 17:25:17', '$2b$10$2wv8/mabmjCaHAOFtll08.UYNPqp5Qml2a.eEEViywHYATqzaLgh2', NULL);
+(12, 'tesztemail2@gmail.com', 'tesztnev', '2004-06-13', 1, 1, '2025-04-12 17:22:59', '2025-04-16 06:22:01', '$2b$10$B7Nvwnn0yDSNsMwZWHAxMu5wYr.XicNLDPP3PO7ozrLB9CaByNb5S', '/public/images/blue.jpg'),
+(13, 'tesztemail@gmail.com', 'tesztnev', '2004-02-04', 1, 1, '2025-04-12 17:25:17', '2025-04-16 06:21:46', '$2b$10$2wv8/mabmjCaHAOFtll08.UYNPqp5Qml2a.eEEViywHYATqzaLgh2', '/public/images/red.jpg');
 
 -- --------------------------------------------------------
 
@@ -235,7 +244,7 @@ ALTER TABLE `rendezveny`
 -- A tábla indexei `reszvevok`
 --
 ALTER TABLE `reszvevok`
-  ADD PRIMARY KEY (`RendID`),
+  ADD PRIMARY KEY (`UserID`,`RendezvenyID`),
   ADD KEY `UserID` (`UserID`);
 
 --
@@ -259,7 +268,7 @@ ALTER TABLE `zenestilus`
 -- AUTO_INCREMENT a táblához `bulihely`
 --
 ALTER TABLE `bulihely`
-  MODIFY `HelyID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `HelyID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT a táblához `organizers`
@@ -280,16 +289,10 @@ ALTER TABLE `rendezveny`
   MODIFY `RendezvenyID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT a táblához `reszvevok`
---
-ALTER TABLE `reszvevok`
-  MODIFY `RendID` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT a táblához `users`
 --
 ALTER TABLE `users`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT a táblához `zenestilus`

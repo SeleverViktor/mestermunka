@@ -1,22 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { format } from 'date-fns'; // Importáljuk a format függvényt
-import { hu } from 'date-fns/locale'; // Magyar lokalizáció
+import { format } from 'date-fns';
+import { hu } from 'date-fns/locale';
 import '../../App.css';
 import '../../assets/Navbar';
-
 
 export default function Services() {
   const [events, setEvents] = useState([]);
   const [selectedService, setSelectedService] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [registrationStatus, setRegistrationStatus] = useState(null);
+
+  // Assuming user is authenticated and UserID is available (e.g., from context or localStorage)
+  const userId = localStorage.getItem('userId'); // Replace with your actual method to get UserID
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const response = await fetch('http://localhost:5000/api/rendezvenyek');
         if (!response.ok) {
-          throw new Error('ERROR : cant read your data');
+          throw new Error('ERROR: cant read your data');
         }
         const data = await response.json();
         setEvents(data);
@@ -32,12 +35,40 @@ export default function Services() {
 
   const handleCardClick = (event) => {
     setSelectedService(event);
+    setRegistrationStatus(null); // Reset registration status when selecting a new event
   };
 
-  // Dátum formázó függvény date-fns használatával
+  const handleRegister = async () => {
+    if (!userId) {
+      setRegistrationStatus('Please log in to register for the event.');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/api/reszvetel', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: parseInt(userId),
+          rendezvenyId: selectedService.RendezvenyID,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to register for the event');
+      }
+
+      setRegistrationStatus('Successfully registered for the event!');
+    } catch (err) {
+      setRegistrationStatus(`Error: ${err.message}`);
+    }
+  };
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return format(date, 'yyyy. MMMM d.', { locale: hu }); // Pl. 2025. április 5.
+    return format(date, 'yyyy. MMMM d.', { locale: hu });
   };
 
   if (loading) {
@@ -91,9 +122,18 @@ export default function Services() {
             alt={selectedService.RNeve}
             className="service-detail-image"
           />
+          <button
+            onClick={handleRegister}
+            className="register-button"
+            disabled={!userId}
+          >
+            Register for Event
+          </button>
+          {registrationStatus && (
+            <p className="registration-status">{registrationStatus}</p>
+          )}
         </div>
       )}
-        
     </div>
   );
 }

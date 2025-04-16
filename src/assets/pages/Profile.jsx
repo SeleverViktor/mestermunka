@@ -7,9 +7,11 @@ import '../../assets/Navbar';
 
 export default function Profile() {
   const [userData, setUserData] = useState(null);
+  const [registrations, setRegistrations] = useState([]); // Jelentkezések állapota
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const [showImageModal, setShowImageModal] = useState(false);
+  const [showRegistrations, setShowRegistrations] = useState(false); // Jelentkezések láthatóságának állapota
   const [selectedImage, setSelectedImage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
@@ -24,7 +26,7 @@ export default function Profile() {
     '/public/images/purple.jpg',
   ];
   const defaultImage = '/public/images/green.jpg';
-  const fallbackImage = '/public/images/green.jpg'; // Fallback kép, ha a betöltés sikertelen
+  const fallbackImage = '/public/images/green.jpg';
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -38,13 +40,23 @@ export default function Profile() {
       }
 
       try {
-        const response = await fetch(`http://localhost:5000/profile/${userId}`);
-        if (!response.ok) {
+        // Felhasználói adatok lekérése
+        const profileResponse = await fetch(`http://localhost:5000/profile/${userId}`);
+        if (!profileResponse.ok) {
           throw new Error('Hiba történt a profil lekérdezésekor!');
         }
-        const data = await response.json();
-        setUserData(data);
-        setSelectedImage(data.ProfilePicture || defaultImage);
+        const profileData = await profileResponse.json();
+        setUserData(profileData);
+        setSelectedImage(profileData.ProfilePicture || defaultImage);
+
+        // Jelentkezések lekérése
+        const registrationsResponse = await fetch(`http://localhost:5000/api/reszvetel/${userId}`);
+        if (!registrationsResponse.ok) {
+          throw new Error('Hiba történt a jelentkezések lekérdezésekor!');
+        }
+        const registrationsData = await registrationsResponse.json();
+        setRegistrations(registrationsData);
+
         setError('');
       } catch (err) {
         setError(err.message);
@@ -117,7 +129,6 @@ export default function Profile() {
       setSuccessMessage(result.message);
       setUserData({ ...userData, ProfilePicture: selectedImage === defaultImage ? null : selectedImage });
 
-      // Üzenet eltüntetése és modal bezárása 3 másodperc után
       setTimeout(() => {
         setSuccessMessage('');
         setShowImageModal(false);
@@ -128,6 +139,45 @@ export default function Profile() {
         setSuccessMessage('');
       }, 1500);
     }
+  };
+
+  // Jelentkezés törlése
+  const handleDeleteRegistration = async (rendezvenyId) => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) return;
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/reszvetel/${userId}/${rendezvenyId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Hiba történt a jelentkezés törlésekor!');
+      }
+
+      const result = await response.json();
+      setSuccessMessage(result.message);
+
+      // Frissítjük a jelentkezések listáját a törlés után
+      setRegistrations(registrations.filter(reg => reg.RendezvenyID !== rendezvenyId));
+
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 1500);
+    } catch (error) {
+      setSuccessMessage(error.message);
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 1500);
+    }
+  };
+
+  // Jelentkezések szekció toggler
+  const toggleRegistrations = () => {
+    setShowRegistrations(!showRegistrations);
   };
 
   // Kép betöltési hiba kezelése
@@ -231,6 +281,44 @@ export default function Profile() {
               </div>
             </div>
           </div>
+        )}
+
+        {/* Gomb a jelentkezések megjelenítéséhez */}
+        <button className="sign-in-link" onClick={toggleRegistrations}>
+          {showRegistrations ? 'Jelentkezések elrejtése' : 'Jelentkezéseim megtekintése'}
+        </button>
+
+        {/* Jelentkezések szekció */}
+        {showRegistrations && (
+          <div className="registrations-section">
+            <h3>Jelentkezéseim</h3>
+            {registrations.length === 0 ? (
+              <p className="no-registrations">Még nem jelentkeztél egyetlen eseményre sem.</p>
+            ) : (
+              <ul className="registrations-list">
+                {registrations.map((registration) => (
+                  <li key={registration.RendezvenyID} className="registration-item">
+                    <div className="registration-details">
+                      <h4>{registration.RNeve}</h4>
+                      <p>Dátum: {formatDate(registration.Datum)}</p>
+                      <p>Helyszín: {registration.Helyszin}</p>
+                      <p>Zene: {registration.Zene || 'Nincs megadva'}</p>
+                    </div>
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDeleteRegistration(registration.RendezvenyID)}
+                    >
+                      Törlés
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
+
+        {successMessage && (
+          <p className="success-message">{successMessage}</p>
         )}
 
         <button className="sign-in-link" onClick={handleLogout}>

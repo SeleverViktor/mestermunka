@@ -536,3 +536,61 @@ button:disabled {
     height: 100px;
   }
 }
+/*partyra regisztralas*/
+.registrations-section {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.registrations-section h3 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.no-registrations {
+  font-style: italic;
+  color: #666;
+}
+
+.registrations-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.registration-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.registration-details h4 {
+  margin: 0 0 5px 0;
+  font-size: 1.2em;
+}
+
+.registration-details p {
+  margin: 2px 0;
+  color: #555;
+}
+
+.delete-button {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.delete-button:hover {
+  background-color: #e60000;
+}

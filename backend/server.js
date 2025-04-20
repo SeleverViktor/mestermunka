@@ -9,6 +9,11 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
 
+
+
+
+
+
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
@@ -51,7 +56,7 @@ app.post('/register', async (req, res) => {
   const { email, username, birthDate, password } = req.body;
 
   if (!email || !username || !birthDate || !password) {
-    return res.status(400).json({ message: 'Minden mező kitöltése kötelező!' });
+    return res.status(400).json({ message: 'All fields are required' });
   }
 
   try {
@@ -72,13 +77,13 @@ app.post('/register', async (req, res) => {
     `;
     const [result] = await db.execute(query, [email, username, birthDate, isAdult, 1, hashedPassword]);
 
-    res.json({ message: 'Sikeres regisztráció!', userId: result.insertId });
+    res.json({ message: 'Succesfull registration!', userId: result.insertId });
   } catch (error) {
     if (error.code === 'ER_DUP_ENTRY') {
-      return res.status(400).json({ message: 'Ez az email már regisztrálva van!' });
+      return res.status(400).json({ message: 'This email is already in use!' });
     }
     console.error('Error during registration:', error);
-    res.status(500).json({ message: 'Szerver hiba történt!' });
+    res.status(500).json({ message: 'Server error!' });
   }
 });
 
@@ -87,27 +92,27 @@ app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ message: 'Email és jelszó megadása kötelező!' });
+    return res.status(400).json({ message: 'Email and password required!' });
   }
 
   try {
     const [rows] = await db.execute('SELECT * FROM users WHERE Email = ?', [email]);
 
     if (rows.length === 0) {
-      return res.status(401).json({ message: 'Hibás email vagy jelszó!' });
+      return res.status(401).json({ message: 'Wrong email or password!' });
     }
 
     const user = rows[0];
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res.status(401).json({ message: 'Hibás email vagy jelszó!' });
+      return res.status(401).json({ message: 'Wrong email or password!' });
     }
 
-    res.json({ message: 'Sikeres bejelentkezés!', userId: user.UserID });
+    res.json({ message: 'Succesfull login!', userId: user.UserID });
   } catch (error) {
     console.error('Error during login:', error);
-    res.status(500).json({ message: 'Szerver hiba történt!' });
+    res.status(500).json({ message: 'Server error!' });
   }
 });
 
@@ -119,13 +124,13 @@ app.get('/profile/:userId', async (req, res) => {
     const [rows] = await db.execute('SELECT UserID, Email, Name, BirthDate, ProfilePicture FROM users WHERE UserID = ?', [userId]);
 
     if (rows.length === 0) {
-      return res.status(404).json({ message: 'Felhasználó nem található!' });
+      return res.status(404).json({ message: 'User not found' });
     }
 
     res.json(rows[0]);
   } catch (error) {
     console.error('Error fetching profile:', error);
-    res.status(500).json({ message: 'Szerver hiba történt a profil lekérdezésekor!' });
+    res.status(500).json({ message: 'Server error while making your profile :(' });
   }
 });
 
@@ -141,23 +146,23 @@ app.post('/profile/:userId/update', async (req, res) => {
     );
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: 'Felhasználó nem található!' });
+      return res.status(404).json({ message: 'Cannot find the user!' });
     }
 
-    res.json({ message: 'Profilkép sikeresen frissítve!' });
+    res.json({ message: 'Profile picture succesfully changed!' });
   } catch (error) {
     console.error('Error updating profile picture:', error);
-    res.status(500).json({ message: 'Szerver hiba történt a profilkép frissítésekor!' });
+    res.status(500).json({ message: 'Server error while changing your profile picture!' });
   }
 });
 
 // Kijelentkezési endpoint
 app.post('/logout', (req, res) => {
   try {
-    res.json({ message: 'Sikeres kijelentkezés!' });
+    res.json({ message: 'Succesfull login!' });
   } catch (error) {
     console.error('Error during logout:', error);
-    res.status(500).json({ message: 'Szerver hiba történt a kijelentkezéskor!' });
+    res.status(500).json({ message: 'Server error while logout!' });
   }
 });
 
@@ -184,7 +189,7 @@ app.get('/api/rendezvenyek', async (req, res) => {
     res.json(rows);
   } catch (error) {
     console.error('Error fetching events:', error);
-    res.status(500).json({ message: 'Szerver hiba történt az események lekérdezésekor!' });
+    res.status(500).json({ message: 'Server error while data loading' });
   }
 });
 
@@ -193,7 +198,7 @@ app.post('/api/reszvetel', async (req, res) => {
   const { userId, rendezvenyId } = req.body;
 
   if (!userId || !rendezvenyId) {
-    return res.status(400).json({ message: 'UserID és RendezvenyID megadása kötelező!' });
+    return res.status(400).json({ message: 'UserID and RendezvenyID required!' });
   }
 
   try {
@@ -201,17 +206,17 @@ app.post('/api/reszvetel', async (req, res) => {
     const parsedRendezvenyId = parseInt(rendezvenyId);
 
     if (isNaN(parsedUserId) || isNaN(parsedRendezvenyId)) {
-      return res.status(400).json({ message: 'UserID és RendezvenyID szám típusú kell legyen!' });
+      return res.status(400).json({ message: 'UserID and RendezvenyID must be number!' });
     }
 
     const [userRows] = await db.execute('SELECT UserID FROM users WHERE UserID = ?', [parsedUserId]);
     if (userRows.length === 0) {
-      return res.status(404).json({ message: 'Felhasználó nem található!' });
+      return res.status(404).json({ message: 'Cannot find user!' });
     }
 
     const [eventRows] = await db.execute('SELECT RendezvenyID FROM rendezveny WHERE RendezvenyID = ?', [parsedRendezvenyId]);
     if (eventRows.length === 0) {
-      return res.status(404).json({ message: 'Rendezvény nem található!' });
+      return res.status(404).json({ message: 'Cannot find the party!' });
     }
 
     const [existingRegistration] = await db.execute(
@@ -219,7 +224,7 @@ app.post('/api/reszvetel', async (req, res) => {
       [parsedUserId, parsedRendezvenyId]
     );
     if (existingRegistration.length > 0) {
-      return res.status(400).json({ message: 'Már jelentkezett erre a rendezvényre!' });
+      return res.status(400).json({ message: 'Too late to enter this party' });
     }
 
     const [result] = await db.execute(
@@ -227,16 +232,16 @@ app.post('/api/reszvetel', async (req, res) => {
       [parsedUserId, parsedRendezvenyId]
     );
 
-    res.json({ message: 'Sikeres jelentkezés a rendezvényre!' });
+    res.json({ message: 'Succesfull enter to this party!' });
   } catch (error) {
     console.error('Error during event registration:', error);
     if (error.code === 'ER_DUP_ENTRY') {
-      return res.status(400).json({ message: 'Már jelentkezett erre a rendezvényre!' });
+      return res.status(400).json({ message: 'You already entered to this party!' });
     }
     if (error.code === 'ER_NO_REFERENCED_ROW_2') {
       return res.status(400).json({ message: 'Érvénytelen UserID vagy RendezvenyID: a hivatkozott rekord nem létezik!' });
     }
-    res.status(500).json({ message: 'Szerver hiba történt a jelentkezés során!', error: error.message });
+    res.status(500).json({ message: 'Server error while entering', error: error.message });
   }
 });
 
@@ -247,7 +252,7 @@ app.get('/api/reszvetel/:userId', async (req, res) => {
   try {
     const parsedUserId = parseInt(userId);
     if (isNaN(parsedUserId)) {
-      return res.status(400).json({ message: 'UserID szám típusú kell legyen!' });
+      return res.status(400).json({ message: 'UserID must be number!' });
     }
 
     const [rows] = await db.execute(`
@@ -273,7 +278,7 @@ app.get('/api/reszvetel/:userId', async (req, res) => {
     res.json(rows);
   } catch (error) {
     console.error('Error fetching user registrations:', error);
-    res.status(500).json({ message: 'Szerver hiba történt a jelentkezések lekérdezésekor!' });
+    res.status(500).json({ message: 'Server error while requesting your data' });
   }
 });
 
@@ -286,7 +291,7 @@ app.delete('/api/reszvetel/:userId/:rendezvenyId', async (req, res) => {
     const parsedRendezvenyId = parseInt(rendezvenyId);
 
     if (isNaN(parsedUserId) || isNaN(parsedRendezvenyId)) {
-      return res.status(400).json({ message: 'UserID és RendezvenyID szám típusú kell legyen!' });
+      return res.status(400).json({ message: 'UserID and RendezvenyID must be number!' });
     }
 
     const [result] = await db.execute(
@@ -295,13 +300,13 @@ app.delete('/api/reszvetel/:userId/:rendezvenyId', async (req, res) => {
     );
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: 'Jelentkezés nem található!' });
+      return res.status(404).json({ message: 'Cannot find your enter' });
     }
 
-    res.json({ message: 'Jelentkezés sikeresen törölve!' });
+    res.json({ message: 'Entering is succefully deleted' });
   } catch (error) {
     console.error('Error deleting registration:', error);
-    res.status(500).json({ message: 'Szerver hiba történt a jelentkezés törlésekor!' });
+    res.status(500).json({ message: 'Server error while deleting the entering!' });
   }
 });
 

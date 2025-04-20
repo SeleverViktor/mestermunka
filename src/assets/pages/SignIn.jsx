@@ -36,7 +36,7 @@ export default function SignIn() {
 
       const result = await response.json();
       if (response.ok) {
-        setSubmitMessage('Sikeres bejelentkezés!');
+        setSubmitMessage('Succesfull login');
         localStorage.setItem('userId', result.userId);
         setFormData({ email: '', password: '' });
         setTimeout(() => {
@@ -46,7 +46,7 @@ export default function SignIn() {
         setSubmitMessage(`Hiba: ${result.message}`);
       }
     } catch (error) {
-      setSubmitMessage('Hiba történt. Kérlek, próbáld újra!');
+      setSubmitMessage('ERROR: Try again');
       console.error('Error during login:', error);
     }
   };

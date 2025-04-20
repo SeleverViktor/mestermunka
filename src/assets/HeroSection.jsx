@@ -26,7 +26,7 @@ function HeroSection() {
           className='btns' 
           buttonStyle='btn--primary' 
           buttonSize='btn--large'
-          to='https://www.youtube.com/watch?v=wDiCntZ4txw'
+          to='https://www.google.com/search?q=youtube&oq=youtube&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIGCAEQRRg8MgYIAhBFGDwyBggDEEUYPDIGCAQQRRg8MgYIBRAuGEDSAQgyOTc4ajBqNKgCALACAA&sourceid=chrome&ie=UTF-8'
          
           >
           WATCH TRAILER <i className='far fa-play-circle' />

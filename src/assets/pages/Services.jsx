@@ -127,7 +127,7 @@ export default function Services() {
             className="register-button"
             disabled={!userId}
           >
-            Register for Event
+            ENTER
           </button>
           {registrationStatus && (
             <p className="registration-status">{registrationStatus}</p>

@@ -43,7 +43,7 @@ export default function Profile() {
         // Felhasználói adatok lekérése
         const profileResponse = await fetch(`http://localhost:5000/profile/${userId}`);
         if (!profileResponse.ok) {
-          throw new Error('Hiba történt a profil lekérdezésekor!');
+          throw new Error('Error while making your profile');
         }
         const profileData = await profileResponse.json();
         setUserData(profileData);
@@ -52,7 +52,7 @@ export default function Profile() {
         // Jelentkezések lekérése
         const registrationsResponse = await fetch(`http://localhost:5000/api/reszvetel/${userId}`);
         if (!registrationsResponse.ok) {
-          throw new Error('Hiba történt a jelentkezések lekérdezésekor!');
+          throw new Error('Error while loading the logins');
         }
         const registrationsData = await registrationsResponse.json();
         setRegistrations(registrationsData);
@@ -122,7 +122,7 @@ export default function Profile() {
       });
 
       if (!response.ok) {
-        throw new Error('Hiba történt a profilkép mentésekor!');
+        throw new Error('Error while changing profile picture');
       }
 
       const result = await response.json();
@@ -155,7 +155,7 @@ export default function Profile() {
       });
 
       if (!response.ok) {
-        throw new Error('Hiba történt a jelentkezés törlésekor!');
+        throw new Error('Error while entering to a party');
       }
 
       const result = await response.json();
@@ -190,11 +190,11 @@ export default function Profile() {
     try {
       const date = new Date(dateString);
       if (isNaN(date.getTime())) {
-        return 'Érvénytelen dátum';
+        return 'invalid date';
       }
       return format(date, 'yyyy. MMMM d.', { locale: hu });
     } catch {
-      return 'Érvénytelen dátum';
+      return 'invalid date';
     }
   };
 
@@ -225,7 +225,7 @@ export default function Profile() {
   if (!userData) {
     return (
       <div className="profile-container">
-        <p className="error-message">Nincs elérhető felhasználói adat.</p>
+        <p className="error-message">Cannot find valid user data</p>
       </div>
     );
   }
@@ -251,7 +251,7 @@ export default function Profile() {
         {showImageModal && (
           <div className="image-modal-overlay">
             <div className="image-modal">
-              <h3>Válassz profilkép</h3>
+              <h3>Choose a profile picture</h3>
               <div className="image-grid">
                 {availableImages.map((image) => (
                   <div
@@ -285,30 +285,30 @@ export default function Profile() {
 
         {/* Gomb a jelentkezések megjelenítéséhez */}
         <button className="sign-in-link" onClick={toggleRegistrations}>
-          {showRegistrations ? 'Jelentkezések elrejtése' : 'Jelentkezéseim megtekintése'}
+          {showRegistrations ? 'Unshow me my parties' : 'Show me my parties'}
         </button>
 
         {/* Jelentkezések szekció */}
         {showRegistrations && (
           <div className="registrations-section">
-            <h3>Jelentkezéseim</h3>
+            <h3>My parties</h3>
             {registrations.length === 0 ? (
-              <p className="no-registrations">Még nem jelentkeztél egyetlen eseményre sem.</p>
+              <p className="no-registrations">You did not enter any parties yet</p>
             ) : (
               <ul className="registrations-list">
                 {registrations.map((registration) => (
                   <li key={registration.RendezvenyID} className="registration-item">
                     <div className="registration-details">
                       <h4>{registration.RNeve}</h4>
-                      <p>Dátum: {formatDate(registration.Datum)}</p>
-                      <p>Helyszín: {registration.Helyszin}</p>
-                      <p>Zene: {registration.Zene || 'Nincs megadva'}</p>
+                      <p>Date: {formatDate(registration.Datum)}</p>
+                      <p>Location: {registration.Helyszin}</p>
+                      <p>Music: {registration.Zene || 'not given'}</p>
                     </div>
                     <button
                       className="delete-button"
                       onClick={() => handleDeleteRegistration(registration.RendezvenyID)}
                     >
-                      Törlés
+                      Delete
                     </button>
                   </li>
                 ))}

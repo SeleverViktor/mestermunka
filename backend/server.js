@@ -75,9 +75,16 @@ app.post('/register', async (req, res) => {
       INSERT INTO users (Email, Name, BirthDate, IsAdult, Consent, password, ProfilePicture)
       VALUES (?, ?, ?, ?, ?, ?, NULL)
     `;
-    const [result] = await db.execute(query, [email, username, birthDate, isAdult, 1, hashedPassword]);
+    if (isAdult  )
+       {
+        const [result] = await db.execute(query, [email, username, birthDate, isAdult, 1, hashedPassword]);
 
-    res.json({ message: 'Succesfull registration!', userId: result.insertId });
+        res.json({ message: 'Succesfull registration!', userId: result.insertId });
+       }
+       else{
+        res.status(401).json({error:'You must be 18 years old'})
+       }
+    
   } catch (error) {
     if (error.code === 'ER_DUP_ENTRY') {
       return res.status(400).json({ message: 'This email is already in use!' });

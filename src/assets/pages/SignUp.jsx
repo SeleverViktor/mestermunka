@@ -40,17 +40,17 @@ export default function SignUp() {
 
       const result = await response.json();
       if (response.ok) {
-        setSubmitMessage('Sikeres regisztráció!');
+        setSubmitMessage('Succesfull registration');
         setFormData({ email: '', username: '', birthDate: '', password: '' });
         // 2 másodperc múlva átirányít a /sign-in oldalra
         setTimeout(() => {
           navigate('/sign-in');
         }, 2000);
       } else {
-        setSubmitMessage(`Hiba: ${result.message}`);
+        setSubmitMessage(`error: ${result.error}`);
       }
     } catch (error) {
-      setSubmitMessage('Hiba történt. Kérlek, próbáld újra!');
+      setSubmitMessage('Try again');
       console.error('Error during registration:', error);
     }
   };

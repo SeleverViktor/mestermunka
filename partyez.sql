@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Ápr 26. 18:06
+-- Létrehozás ideje: 2025. Ápr 26. 18:19
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -72,30 +72,6 @@ CREATE TABLE `organizers` (
 -- --------------------------------------------------------
 
 --
--- Tábla szerkezet ehhez a táblához `preferences`
---
-
-DROP TABLE IF EXISTS `preferences`;
-CREATE TABLE `preferences` (
-  `PrefID` int(11) NOT NULL,
-  `Preference` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Tábla szerkezet ehhez a táblához `prefuser`
---
-
-DROP TABLE IF EXISTS `prefuser`;
-CREATE TABLE `prefuser` (
-  `UserID` int(11) NOT NULL,
-  `PrefID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Tábla szerkezet ehhez a táblához `rendezveny`
 --
 
@@ -152,7 +128,8 @@ INSERT INTO `reszvevok` (`RendezvenyID`, `UserID`) VALUES
 (1, 19),
 (5, 19),
 (6, 19),
-(4, 25);
+(4, 25),
+(9, 25);
 
 -- --------------------------------------------------------
 
@@ -236,19 +213,6 @@ ALTER TABLE `organizers`
   ADD KEY `UserID` (`UserID`);
 
 --
--- A tábla indexei `preferences`
---
-ALTER TABLE `preferences`
-  ADD PRIMARY KEY (`PrefID`);
-
---
--- A tábla indexei `prefuser`
---
-ALTER TABLE `prefuser`
-  ADD PRIMARY KEY (`UserID`,`PrefID`),
-  ADD KEY `PrefID` (`PrefID`);
-
---
 -- A tábla indexei `rendezveny`
 --
 ALTER TABLE `rendezveny`
@@ -292,12 +256,6 @@ ALTER TABLE `organizers`
   MODIFY `OrganizerID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT a táblához `preferences`
---
-ALTER TABLE `preferences`
-  MODIFY `PrefID` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT a táblához `rendezveny`
 --
 ALTER TABLE `rendezveny`
@@ -330,13 +288,6 @@ ALTER TABLE `bulihely`
 --
 ALTER TABLE `organizers`
   ADD CONSTRAINT `organizers_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`);
-
---
--- Megkötések a táblához `prefuser`
---
-ALTER TABLE `prefuser`
-  ADD CONSTRAINT `prefuser_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`),
-  ADD CONSTRAINT `prefuser_ibfk_2` FOREIGN KEY (`PrefID`) REFERENCES `preferences` (`PrefID`);
 
 --
 -- Megkötések a táblához `rendezveny`

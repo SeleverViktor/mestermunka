@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Ápr 16. 09:54
+-- Létrehozás ideje: 2025. Ápr 26. 16:11
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -117,12 +117,12 @@ CREATE TABLE `rendezveny` (
 --
 
 INSERT INTO `rendezveny` (`RendezvenyID`, `BuliID`, `RNeve`, `Leiras`, `Datum`, `Helyszin`, `pictures`, `Start`, `ZeneId`) VALUES
-(1, 11, 'XLIV. Országos Táncháztalálkozó és Kirakodóvásár', 'Az élő népművészet összművészeti fesztiválja, ahol táncházak, népművészeti vásár és gálaműsorok várják a látogatókat. ', '2025-04-06', 'Papp László Budapest Sportarén', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/little.jpg', '18:30', 3),
-(2, 12, 'Szent Patrik Fesztivál és Felvonulás​', 'Ír kultúrát ünneplő rendezvény felvonulással, élő zenével, tánccal és ír ételekkel. ', '2025-03-16', 'Szabadság tér', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/rave.jpeg', '19:00', 3),
-(3, 6, 'Fatal Error lemezbemutató és búcsúkoncert​', 'A 14 éves fennállását lezáró zenekar különleges koncerttel búcsúzik, vendégként a The Pontiac zenekarral.', '2025-03-21', 'A38 Hajó', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/tanchaz.jpg', '18:00', 6),
-(4, 2, 'Airbourne koncert​', 'Az ausztrál hard rock zenekar energikus koncertje, amely ismét felrázza a budapesti közönséget.', '2025-03-25', 'Akvárium Klub​', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/hippik.jpg', '23:00', 6),
-(5, 11, 'Konyhakiállítás 2025', 'Magyarország legnagyobb konyhabútorokat, konyhagépeket és konyhai eszközöket bemutató kiállítása, több mint 100 kiállítóval.', '2025-05-28', 'Papp László Budapest Sportarén', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/sisi.jpg', '22:30', 5),
-(6, 6, 'Sziget Fesztivál', 'A világ egyik legnagyobb zenei és kulturális fesztiválja, amely 2025. augusztus 6. és 11. között kerül megrendezésre Budapesten, a Hajógyári-szigeten. A rendezvényen világszintű előadók és változatos programok várják a látogatókat.', '2025-06-06', 'Hajógyári-sziget', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/sziget.jpg', '08:00:00', 6);
+(1, 11, 'Little big concert', ' Little Big delivers a high-energy, genre-bending concert experience, blending rave, punk, and pop with provocative visuals and infectious beats. Expect wild costumes, satirical humor, and a non-stop party vibe that gets the crowd moving.', '2025-04-06', 'Papp László Budapest Sportarén', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/little.jpg', '18:30', 3),
+(2, 12, 'Verknipt Hungary', 'A high-energy hard techno rave in Budapest with top DJs, pounding beats, and immersive visuals. Expect a passionate crowd and an intense, industrial vibe.', '2025-03-16', 'Szabadság tér', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/rave.jpeg', '19:00', 3),
+(3, 6, '44th National Táncház Festival and Fair', 'Hungary’s biggest traditional dance house festival, held in Budapest from April 4–6, 2025, with live folk music, dance workshops, performances, and craft fairs.', '2025-03-21', 'A38 Hajó', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/tanchaz.jpg', '18:00', 6),
+(4, 2, 'Holi Peace Festival 2025', 'A vibrant celebration inspired by the Indian Holi festival, featuring live music, dance, and the joyful throwing of colored powders. It\'s a family-friendly event that promotes peace, love, and unity. ', '2025-03-25', 'Akvárium Klub​', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/hippik.jpg', '23:00', 6),
+(5, 11, 'Sisi x Hundred Sins – Panel Opera', 'A unique fusion performance blending Sisi\'s hip-hop style with Hundred Sins\' electronic and operatic elements. The event featured guest artists like Gently Da Spittah’, DZSINDZSER, KRISTOAF, LIL FRAKK, NLP, and PANKA.', '2025-05-28', 'Papp László Budapest Sportarén', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/sisi.jpg', '22:30', 5),
+(6, 6, 'Sziget Festival 2025', 'One of Europe’s largest and most diverse music and cultural festivals, Sziget 2025 will feature over 1,000 performances across multiple stages. Headliners include Post Malone, A$AP Rocky, Shawn Mendes, Charli XCX, Nelly Furtado, and Armin van Buuren. The festival offers a unique blend of music, art installations, workshops, and a vibrant international atmosphere. ', '2025-06-06', 'Hajógyári-sziget', 'https://raw.githubusercontent.com/SeleverViktor/mestermunka/main/public/images/sziget.jpg', '08:00:00', 6);
 
 -- --------------------------------------------------------
 
@@ -142,7 +142,9 @@ CREATE TABLE `reszvevok` (
 
 INSERT INTO `reszvevok` (`RendezvenyID`, `UserID`) VALUES
 (5, 12),
-(5, 13);
+(5, 13),
+(5, 19),
+(6, 19);
 
 -- --------------------------------------------------------
 
@@ -172,7 +174,13 @@ INSERT INTO `users` (`UserID`, `Email`, `Name`, `BirthDate`, `IsAdult`, `Consent
 (10, '19790213sziszko@gmail.com', 'tesztnev', '2003-07-10', 1, 1, '2025-04-12 12:13:15', '2025-04-12 17:17:32', '$2b$10$bwvKr2gwYC.Q9Q2Nc0lCLusOPJMBxu0BDi9SciTTMsGpn8dUR4PG2', '/public/images/yellow.jpg'),
 (11, 'jani.vok.gaming@gmail.com', 'tesztnev', '2005-04-16', 1, 1, '2025-04-12 16:53:51', '2025-04-12 17:17:19', '$2b$10$NU7Nrg5Y7OMg.QcOYmd33.TsgmGVrqfiLNd0ANsNrnTrQwqfoHQ.u', '/public/images/gray.jpg'),
 (12, 'tesztemail2@gmail.com', 'tesztnev', '2004-06-13', 1, 1, '2025-04-12 17:22:59', '2025-04-16 06:22:01', '$2b$10$B7Nvwnn0yDSNsMwZWHAxMu5wYr.XicNLDPP3PO7ozrLB9CaByNb5S', '/public/images/blue.jpg'),
-(13, 'tesztemail@gmail.com', 'tesztnev', '2004-02-04', 1, 1, '2025-04-12 17:25:17', '2025-04-16 06:21:46', '$2b$10$2wv8/mabmjCaHAOFtll08.UYNPqp5Qml2a.eEEViywHYATqzaLgh2', '/public/images/red.jpg');
+(13, 'tesztemail@gmail.com', 'tesztnev', '2004-02-04', 1, 1, '2025-04-12 17:25:17', '2025-04-16 06:21:46', '$2b$10$2wv8/mabmjCaHAOFtll08.UYNPqp5Qml2a.eEEViywHYATqzaLgh2', '/public/images/red.jpg'),
+(19, 'most@gmail.com', 'most123', '2025-04-04', 0, 1, '2025-04-20 11:30:51', '2025-04-20 11:30:51', '$2b$10$ipXCAplHtKxk2mfM.bh4T.tMqrmyMI5xXilY9L0f6WZ1CuuCKFKtO', NULL),
+(20, '19@gmail.com', 'héié', '2025-02-22', 0, 1, '2025-04-20 11:31:18', '2025-04-20 11:31:18', '$2b$10$1EiWMhUWYJ8c/M91UPtQO.XOd6LJNL8YdONw0dxd2ikq3DItx72nW', NULL),
+(21, 'fark@gmail.com', 'fark', '2025-04-17', 0, 1, '2025-04-20 19:57:06', '2025-04-20 19:57:06', '$2b$10$BZLsBJvBK0UyHqha.iomku8BtUF0B9fwk5uY.t2EGt.0qDVKEURKC', NULL),
+(22, '1911@gmail.com', 'fsgss', '2025-04-05', 0, 1, '2025-04-20 19:58:38', '2025-04-20 19:58:38', '$2b$10$e3CaRYlXBiJWSyjGQQmyu.1cfA1UBoeoNK5msJIcd6dC2M/0fbpuu', NULL),
+(23, 'nemg@gmail.com', 'nemtudo', '2025-04-03', 0, 1, '2025-04-20 20:10:00', '2025-04-20 20:10:00', '$2b$10$rhHOrQhOc8Nge7iXysrwJ.7ze3wpI7VSfyAdrL5AoCJZtmQaR/cWe', NULL),
+(24, 'kisbela@nagy.hu', 'béla kis', '2025-04-03', 0, 1, '2025-04-20 20:10:54', '2025-04-20 20:10:54', '$2b$10$5JWeItR6/nBd5AYHcpk8Rua2fyBf2vU/u47UnfjGTOa3Ex0A29PvC', NULL);
 
 -- --------------------------------------------------------
 
@@ -292,7 +300,7 @@ ALTER TABLE `rendezveny`
 -- AUTO_INCREMENT a táblához `users`
 --
 ALTER TABLE `users`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT a táblához `zenestilus`

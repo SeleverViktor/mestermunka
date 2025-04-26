@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { hu } from 'date-fns/locale';
 import '../../App.css';
-import '../../assets/Navbar';
 
 export default function Services() {
   const [events, setEvents] = useState([]);
@@ -11,8 +10,7 @@ export default function Services() {
   const [error, setError] = useState(null);
   const [registrationStatus, setRegistrationStatus] = useState(null);
 
-  // Assuming user is authenticated and UserID is available (e.g., from context or localStorage)
-  const userId = localStorage.getItem('userId'); // Replace with your actual method to get UserID
+  const userId = localStorage.getItem('userId');
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -35,7 +33,7 @@ export default function Services() {
 
   const handleCardClick = (event) => {
     setSelectedService(event);
-    setRegistrationStatus(null); // Reset registration status when selecting a new event
+    setRegistrationStatus(null);
   };
 
   const handleRegister = async () => {
@@ -98,10 +96,7 @@ export default function Services() {
             <p><strong>Date:</strong> {formatDate(event.Datum)}</p>
             <p><strong>Start:</strong> {event.Start}</p>
             <p><strong>Location:</strong> {event.Helyszin}</p>
-            <p>
-              <strong>Music Style:</strong>{' '}
-              {event.Zene ? event.Zene : 'not given'}
-            </p>
+            <p><strong>Music Style:</strong> {event.Zene ? event.Zene : 'not given'}</p>
           </div>
         ))}
       </div>
@@ -113,10 +108,7 @@ export default function Services() {
           <p><strong>Date:</strong> {formatDate(selectedService.Datum)}</p>
           <p><strong>Start:</strong> {selectedService.Start}</p>
           <p><strong>Location:</strong> {selectedService.Helyszin}</p>
-          <p>
-            <strong>Music Style:</strong>{' '}
-            {selectedService.Zene ? selectedService.Zene : 'not given'}
-          </p>
+          <p><strong>Music Style:</strong> {selectedService.Zene ? selectedService.Zene : 'not given'}</p>
           <img
             src={selectedService.pictures || 'https://via.placeholder.com/150'}
             alt={selectedService.RNeve}

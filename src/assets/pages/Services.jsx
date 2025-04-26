@@ -9,6 +9,10 @@ export default function Services() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [registrationStatus, setRegistrationStatus] = useState(null);
+  const [musicStyles, setMusicStyles] = useState([]);
+  const [selectedStyles, setSelectedStyles] = useState([]);
+  const [visibleEvents, setVisibleEvents] = useState(6); // Initial number of events to show
+  const eventsPerPage = 6; // Number of events to load each time
 
   const userId = localStorage.getItem('userId');
 
@@ -21,6 +25,11 @@ export default function Services() {
         }
         const data = await response.json();
         setEvents(data);
+        
+        // Extract unique music styles from events
+        const styles = [...new Set(data.map(event => event.Zene).filter(style => style))];
+        setMusicStyles(styles);
+        
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -64,10 +73,28 @@ export default function Services() {
     }
   };
 
+  const handleStyleChange = (style) => {
+    setSelectedStyles(prev => 
+      prev.includes(style) 
+        ? prev.filter(s => s !== style)
+        : [...prev, style]
+    );
+    setVisibleEvents(eventsPerPage); // Reset visible events when filter changes
+  };
+
+  const handleLoadMore = () => {
+    setVisibleEvents(prev => prev + eventsPerPage);
+  };
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return format(date, 'yyyy. MMMM d.', { locale: hu });
   };
+
+  // Filter events based on selected music styles
+  const filteredEvents = selectedStyles.length === 0 
+    ? events 
+    : events.filter(event => selectedStyles.includes(event.Zene));
 
   if (loading) {
     return <div className="services-container">Loading...</div>;
@@ -80,8 +107,25 @@ export default function Services() {
   return (
     <div className="services-container">
       <h1 className="services-title">Parties</h1>
+      
+      <div className="filter-container">
+        <h3>Filter by Music Style</h3>
+        <div className="checkbox-group">
+          {musicStyles.map(style => (
+            <label key={style} className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={selectedStyles.includes(style)}
+                onChange={() => handleStyleChange(style)}
+              />
+              {style}
+            </label>
+          ))}
+        </div>
+      </div>
+
       <div className="cards-container">
-        {events.map((event) => (
+        {filteredEvents.slice(0, visibleEvents).map((event) => (
           <div
             key={event.RendezvenyID}
             className="service-card"
@@ -94,12 +138,18 @@ export default function Services() {
             />
             <h3>{event.RNeve}</h3>
             <p><strong>Date:</strong> {formatDate(event.Datum)}</p>
-            <p><strong>Start:</strong> {event.Start}</p>
-            <p><strong>Location:</strong> {event.Helyszin}</p>
-            <p><strong>Music Style:</strong> {event.Zene ? event.Zene : 'not given'}</p>
           </div>
         ))}
       </div>
+
+      {visibleEvents < filteredEvents.length && (
+        <button
+          onClick={handleLoadMore}
+          className="load-more-button"
+        >
+          View More Parties
+        </button>
+      )}
 
       {selectedService && (
         <div className="service-details">
